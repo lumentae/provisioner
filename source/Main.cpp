@@ -1,7 +1,20 @@
 #include <iostream>
+#include <CLI/CLI.hpp>
 
-int main()
+#include "commands/NewCommand.h"
+#include "utils/String.h"
+
+int main(const int argc, char** argv)
 {
-    std::cout << "Hello, World!" << std::endl;
+    CLI::App app{"Provisioner CLI"};
+    app.validate_optional_arguments();
+    app.validate_positionals();
+    argv = app.ensure_utf8(argv);
+
+    provisioner::commands::NewCommand::Register(app);
+
+    app.require_subcommand(1);
+
+    CLI11_PARSE(app, argc, argv);
     return 0;
 }
