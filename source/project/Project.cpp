@@ -7,7 +7,7 @@ namespace provisioner::project
         std::ifstream file(mJsonPath);
         if (!file.is_open())
         {
-            throw std::runtime_error("Failed to open " + mJsonPath);
+            throw std::runtime_error("Failed to open " + mJsonPath.string());
         }
 
         nlohmann::json json;
@@ -21,10 +21,10 @@ namespace provisioner::project
         std::ofstream file(mJsonPath);
         if (!file.is_open())
         {
-            throw std::runtime_error("Failed to open " + mJsonPath);
+            throw std::runtime_error("Failed to open " + mJsonPath.string());
         }
 
         const nlohmann::json json = mData;
-        file << json;
+        file << json.dump(4);
     }
 }

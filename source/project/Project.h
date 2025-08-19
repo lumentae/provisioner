@@ -9,26 +9,19 @@
 
 namespace provisioner::project
 {
-    struct MinecraftConfig
-    {
-        std::string version;
-        std::string type;
-    };
-
     class Project
     {
     public:
-        explicit Project(std::string path) : mJsonPath(std::move(path))
+        explicit Project(std::filesystem::path path) : mJsonPath(std::move(path))
         {
-            Load();
         }
 
         void Load();
         void Save();
 
-    private:
-        std::string mJsonPath;
-
         ProjectData mData;
+
+    private:
+        std::filesystem::path mJsonPath;
     };
 }

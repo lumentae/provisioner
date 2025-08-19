@@ -7,15 +7,23 @@
 
 int main(const int argc, char** argv)
 {
-    CLI::App app{"Provisioner CLI"};
-    app.validate_optional_arguments();
-    app.validate_positionals();
-    argv = app.ensure_utf8(argv);
+    try
+    {
+        CLI::App app{"Provisioner CLI"};
+        app.validate_optional_arguments();
+        app.validate_positionals();
+        argv = app.ensure_utf8(argv);
 
-    REGISTER_COMMAND(New, "Create a new project")
+        REGISTER_COMMAND(New, "Create a new project")
 
-    app.require_subcommand(1);
+        app.require_subcommand(1);
 
-    CLI11_PARSE(app, argc, argv);
+        CLI11_PARSE(app, argc, argv);
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
     return 0;
 }
