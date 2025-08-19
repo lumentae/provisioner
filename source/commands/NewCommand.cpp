@@ -2,9 +2,8 @@
 
 namespace provisioner::commands
 {
-    void NewCommand::Register(CLI::App& app)
+    void NewCommand::Register(CLI::App* sub)
     {
-        auto* sub = app.add_subcommand("new", "Create a new project");
         const auto opt = std::make_shared<Options>();
 
         sub->add_option("name", opt->name)->required();
@@ -17,5 +16,6 @@ namespace provisioner::commands
     void NewCommand::Execute(const std::shared_ptr<Options>& options)
     {
         // TODO: Create project
+        std::cout << "Creating project " << options->name << std::endl;
     }
 }

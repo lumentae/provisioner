@@ -14,7 +14,7 @@ namespace provisioner::commands
 
         NewCommand() = default;
         ~NewCommand() = default;
-        static void Register(CLI::App& app);
+        static void Register(CLI::App* sub);
         static void Execute(const std::shared_ptr<Options>& options);
     };
 }
