@@ -1,4 +1,7 @@
 {
+    "includes": [
+        "config"
+    ],
     "minecraft": {
         "type": "fabric",
         "version": "1.21.8"

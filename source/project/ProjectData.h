@@ -16,7 +16,8 @@ namespace provisioner::project
     {
         std::string name = "Unnamed";
         MinecraftOptions minecraft = MinecraftOptions{};
+        std::vector<std::string> includes = {};
     };
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ProjectData, name, minecraft)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ProjectData, name, minecraft, includes)
 };
