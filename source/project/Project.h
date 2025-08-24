@@ -33,7 +33,7 @@ namespace provisioner::project
 }
 
 #define REQUIRE_PROJECT \
-    auto& project = provisioner::project::Project::GetInstance(); \
+    auto& project = project::Project::GetInstance(); \
     if (project.mData.name.empty()) \
     { \
         throw std::runtime_error("No project found. Please run 'provisioner new' to create a new project."); \

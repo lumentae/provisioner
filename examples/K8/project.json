@@ -1,0 +1,7 @@
+{
+    "minecraft": {
+        "type": "fabric",
+        "version": "1.21.8"
+    },
+    "name": "K8"
+}

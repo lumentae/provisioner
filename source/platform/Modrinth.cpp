@@ -40,16 +40,20 @@ namespace provisioner::platform
         nlohmann::json fileJson = versionJson["files"][0];
 
         project::mods::ModData modData;
-        modData.name = modJson["slug"];
+        modData.name = modJson["title"];
+        modData.id = id;
+        modData.slug = modJson["slug"];
+        modData.platform = "modrinth";
 
         modData.download.url = fileJson["url"];
         modData.download.size = fileJson["size"];
         modData.download.sha1 = fileJson["hashes"]["sha1"];
         modData.download.sha512 = fileJson["hashes"]["sha512"];
 
-        modData.update.platform = "modrinth";
         modData.update.id = id;
         modData.update.version = version;
+
+        modData.requirements = versionJson["dependencies"];
 
         return modData;
     }
@@ -59,7 +63,7 @@ namespace provisioner::platform
         const auto& project = project::Project::GetInstance();
 
         const auto modUrl = std::format(
-            R"(https://api.modrinth.com/v2/project/{}/version?loaders=%5B%22{}%22%5B&game_versions=%5B%22{}%22%5B&featured=true)",
+            R"(https://api.modrinth.com/v2/project/{}/version?loaders=%5B%22{}%22%5D&game_versions=%5B%22{}%22%5D&featured=true)",
             id,
             project.mData.minecraft.type,
             project.mData.minecraft.version
@@ -69,8 +73,6 @@ namespace provisioner::platform
         nlohmann::json modJson = nlohmann::json::parse(modBody);
         std::string latestVersion = modJson[0]["id"];
         std::string latestVersionReadable = modJson[0]["version_number"];
-
-        spdlog::info("Latest version for {} is {} ({})", id, latestVersionReadable, latestVersion);
 
         return latestVersion;
     }

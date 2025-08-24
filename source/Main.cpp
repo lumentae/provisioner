@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stacktrace>
 #include <CLI/CLI.hpp>
 #include <curl/curl.h>
 
@@ -13,36 +14,42 @@
  * Add commands for server control
  * Add build command
  * Add export command (for .mrpack)
+ * Auto accept eula option
  */
 
 int main(const int argc, char** argv)
 {
-    //try
-    //{
-    if (std::filesystem::exists("project.json"))
+#ifndef DEBUG
+    try
     {
-        auto& project = provisioner::project::Project::GetInstance();
-        project.Load();
+#endif
+        if (std::filesystem::exists("project.json"))
+        {
+            auto& project = provisioner::project::Project::GetInstance();
+            project.Load();
+        }
+
+        curl_global_init(CURL_GLOBAL_DEFAULT);
+
+        CLI::App app{"Provisioner CLI"};
+        app.validate_optional_arguments();
+        app.validate_positionals();
+        argv = app.ensure_utf8(argv);
+
+        REGISTER_COMMAND(New, "Create a new project")
+        REGISTER_COMMAND(Add, "Adds a mod to a project")
+
+        app.require_subcommand(1);
+
+        CLI11_PARSE(app, argc, argv);
+#ifndef DEBUG
     }
-
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-
-    CLI::App app{"Provisioner CLI"};
-    app.validate_optional_arguments();
-    app.validate_positionals();
-    argv = app.ensure_utf8(argv);
-
-    REGISTER_COMMAND(New, "Create a new project")
-    REGISTER_COMMAND(Add, "Adds a mod to a project")
-
-    app.require_subcommand(1);
-
-    CLI11_PARSE(app, argc, argv);
-    //}
-    //catch (std::exception& e)
-    //{
-    //    std::cerr << e.what() << std::endl;
-    //    return 1;
-    //}
+    catch (std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+        std::cerr << std::stacktrace::current() << std::endl;
+        return 1;
+    }
+#endif
     return 0;
 }

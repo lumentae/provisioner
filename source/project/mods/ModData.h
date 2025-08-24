@@ -1,17 +1,25 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
+#include <utils/Json.h>
 
 namespace provisioner::project::mods
 {
+    struct ModRequirement
+    {
+        std::string project_id = "";
+        std::optional<std::string> version_id = "";
+        std::string dependency_type = "";
+    };
+
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModRequirement, project_id, version_id, dependency_type)
+
     struct ModUpdate
     {
-        std::string platform;
         std::string id;
         std::string version;
     };
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModUpdate, platform, id, version)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModUpdate, id, version)
 
     struct ModDownload
     {
@@ -26,10 +34,13 @@ namespace provisioner::project::mods
     struct ModData
     {
         std::string name = "Unnamed";
-        std::string fileName = "Unnamed";
+        std::string id = "";
+        std::string slug = "";
+        std::string platform = "";
         ModDownload download = ModDownload{};
         ModUpdate update = ModUpdate{};
+        std::vector<ModRequirement> requirements = {};
     };
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModData, name, fileName, download, update)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModData, name, id, slug, download, update, requirements)
 };

@@ -16,9 +16,20 @@ namespace provisioner::project::mods
             version = globals::Platform->GetLatestVersion(id);
 
         auto modData = globals::Platform->GetModData(id, version);
-        spdlog::info("Adding mod {} ({})", modData.name, version);
+        if (std::filesystem::exists(modPath / (modData.slug + ".pm")))
+        {
+            spdlog::warn("Mod {} ({}) already exists", modData.name, modData.id);
+            return;
+        }
+
+        spdlog::info("Adding mod {} ({})", modData.name, modData.id);
+
+        for (const auto& requirement : modData.requirements)
+        {
+            AddMod(requirement.project_id);
+        }
 
         const nlohmann::json json = modData;
-        utils::WriteFile(modPath / (modData.name + ".pm"), json.dump(4));
+        utils::WriteFile(modPath / (modData.slug + ".pm"), json.dump(4));
     }
 }
