@@ -1,0 +1,77 @@
+#include "Modrinth.h"
+
+#include <nlohmann/json.hpp>
+#include <utils/File.h>
+#include <Common.h>
+
+#include "Globals.h"
+#include "project/Project.h"
+
+namespace provisioner::platform
+{
+    void Modrinth::Download(const std::string& id, const std::string& version)
+    {
+        const std::filesystem::path modsPath = "mods";
+        if (!std::filesystem::exists(modsPath))
+        {
+            std::filesystem::create_directory(modsPath);
+        }
+
+        const auto url = "https://api.modrinth.com/v2/project/" + id + "/version/" + version;
+        const auto body = utils::FetchUrl(url);
+
+        nlohmann::json file = nlohmann::json::parse(body)[0]["files"][0];
+        const std::string download_url = file["download_url"];
+        const std::string filename = file["filename"];
+
+        spdlog::info("Downloading {} from Modrinth", filename);
+        utils::DownloadFile(download_url, modsPath / filename);
+    }
+
+    project::mods::ModData Modrinth::GetModData(const std::string& id, const std::string& version)
+    {
+        const auto modUrl = "https://api.modrinth.com/v2/project/" + id;
+        const auto modBody = utils::FetchUrl(modUrl);
+        nlohmann::json modJson = nlohmann::json::parse(modBody);
+
+        const auto versionUrl = modUrl + "/version/" + version;
+        const auto versionBody = utils::FetchUrl(versionUrl);
+        nlohmann::json versionJson = nlohmann::json::parse(versionBody);
+        nlohmann::json fileJson = versionJson["files"][0];
+
+        project::mods::ModData modData;
+        modData.name = modJson["slug"];
+
+        modData.download.url = fileJson["url"];
+        modData.download.size = fileJson["size"];
+        modData.download.sha1 = fileJson["hashes"]["sha1"];
+        modData.download.sha512 = fileJson["hashes"]["sha512"];
+
+        modData.update.platform = "modrinth";
+        modData.update.id = id;
+        modData.update.version = version;
+
+        return modData;
+    }
+
+    std::string Modrinth::GetLatestVersion(const std::string& id)
+    {
+        const auto& project = project::Project::GetInstance();
+
+        const auto modUrl = std::format(
+            R"(https://api.modrinth.com/v2/project/{}/version?loaders=%5B%22{}%22%5B&game_versions=%5B%22{}%22%5B&featured=true)",
+            id,
+            project.mData.minecraft.type,
+            project.mData.minecraft.version
+        );
+
+        const auto modBody = utils::FetchUrl(modUrl);
+        nlohmann::json modJson = nlohmann::json::parse(modBody);
+        std::string latestVersion = modJson[0]["id"];
+        std::string latestVersionReadable = modJson[0]["version_number"];
+
+        spdlog::info("Latest version for {} is {} ({})", id, latestVersionReadable, latestVersion);
+
+        return latestVersion;
+    }
+}

@@ -1,29 +1,48 @@
 #include <iostream>
 #include <CLI/CLI.hpp>
+#include <curl/curl.h>
 
 #include "Common.h"
 #include "commands/NewCommand.h"
+#include "commands/AddCommand.h"
+#include "project/Project.h"
 #include "utils/String.h"
+
+/* TODO:
+ * Implement plugin support
+ * Add commands for server control
+ * Add build command
+ * Add export command (for .mrpack)
+ */
 
 int main(const int argc, char** argv)
 {
-    try
+    //try
+    //{
+    if (std::filesystem::exists("project.json"))
     {
-        CLI::App app{"Provisioner CLI"};
-        app.validate_optional_arguments();
-        app.validate_positionals();
-        argv = app.ensure_utf8(argv);
-
-        REGISTER_COMMAND(New, "Create a new project")
-
-        app.require_subcommand(1);
-
-        CLI11_PARSE(app, argc, argv);
+        auto& project = provisioner::project::Project::GetInstance();
+        project.Load();
     }
-    catch (std::exception& e)
-    {
-        std::cerr << e.what() << std::endl;
-        return 1;
-    }
+
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+
+    CLI::App app{"Provisioner CLI"};
+    app.validate_optional_arguments();
+    app.validate_positionals();
+    argv = app.ensure_utf8(argv);
+
+    REGISTER_COMMAND(New, "Create a new project")
+    REGISTER_COMMAND(Add, "Adds a mod to a project")
+
+    app.require_subcommand(1);
+
+    CLI11_PARSE(app, argc, argv);
+    //}
+    //catch (std::exception& e)
+    //{
+    //    std::cerr << e.what() << std::endl;
+    //    return 1;
+    //}
     return 0;
 }

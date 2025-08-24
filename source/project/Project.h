@@ -12,6 +12,12 @@ namespace provisioner::project
     class Project
     {
     public:
+        static Project& GetInstance()
+        {
+            static Project instance(std::filesystem::path("project.json"));
+            return instance;
+        }
+
         explicit Project(std::filesystem::path path) : mJsonPath(std::move(path))
         {
         }
@@ -25,3 +31,10 @@ namespace provisioner::project
         std::filesystem::path mJsonPath;
     };
 }
+
+#define REQUIRE_PROJECT \
+    auto& project = provisioner::project::Project::GetInstance(); \
+    if (project.mData.name.empty()) \
+    { \
+        throw std::runtime_error("No project found. Please run 'provisioner new' to create a new project."); \
+    }
