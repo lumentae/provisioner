@@ -33,9 +33,16 @@ namespace provisioner::project
     };
 }
 
+#define REQUIRE_PROJECT_LOAD() \
+    auto& project = project::Project::GetInstance(); \
+    if (project.mData.name.empty() || !std::filesystem::exists("project.json")) \
+    { \
+        project.Load(); \
+    }
+
 #define REQUIRE_PROJECT() \
     auto& project = project::Project::GetInstance(); \
-    if (project.mData.name.empty()) \
+    if (project.mData.name.empty() || !std::filesystem::exists("project.json")) \
     { \
         throw std::runtime_error("No project found. Please run 'provisioner new' to create a new project."); \
     }

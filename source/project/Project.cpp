@@ -2,6 +2,7 @@
 
 #include "mods/Mod.h"
 #include "utils/File.h"
+#include "utils/String.h"
 
 namespace provisioner::project
 {
@@ -16,7 +17,13 @@ namespace provisioner::project
         nlohmann::json json;
         file >> json;
 
-        mData = json.get<ProjectData>();
+        mData = json;
+
+        auto allowedVersionsCopy = mData.allowedVersions;
+        allowedVersionsCopy.emplace_back(mData.minecraft.version);
+
+        mData.allowedVersionsString.first = utils::Join(allowedVersionsCopy, ",");
+        mData.allowedVersionsString.second = utils::Join(allowedVersionsCopy, "%22,%22");
     }
 
     void Project::Save()

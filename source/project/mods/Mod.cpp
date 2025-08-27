@@ -2,13 +2,15 @@
 
 #include <spdlog/spdlog.h>
 
+#include "project/Project.h"
 #include "utils/File.h"
-#include "utils/Prompt.h"
 
 namespace provisioner::project::mods
 {
     void Mod::Add(std::string id, std::string version = "latest")
     {
+        REQUIRE_PROJECT();
+
         const std::filesystem::path modPath = "mods";
         if (!std::filesystem::exists(modPath))
             std::filesystem::create_directory(modPath);
@@ -45,6 +47,8 @@ namespace provisioner::project::mods
 
     void Mod::Remove(const std::string& id)
     {
+        REQUIRE_PROJECT();
+
         const std::filesystem::path modPath = "mods";
         if (!std::filesystem::exists(modPath))
             std::filesystem::create_directory(modPath);
@@ -65,6 +69,8 @@ namespace provisioner::project::mods
 
     void Mod::Download(const ModData& mod)
     {
+        REQUIRE_PROJECT();
+
         const std::filesystem::path cachePath = ".cache";
         const std::filesystem::path modsPath = cachePath / "mods";
         if (!std::filesystem::exists(cachePath))

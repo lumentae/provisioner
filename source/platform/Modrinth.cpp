@@ -61,13 +61,13 @@ namespace provisioner::platform
 
     std::string Modrinth::GetLatestVersion(const std::string& id)
     {
-        const auto& project = project::Project::GetInstance();
+        REQUIRE_PROJECT_LOAD();
 
         const auto modUrl = std::format(
             R"(https://api.modrinth.com/v2/project/{}/version?loaders=%5B%22{}%22%5D&game_versions=%5B%22{}%22%5D&featured=true)",
             id,
             project.mData.minecraft.type,
-            project.mData.minecraft.version
+            project.mData.allowedVersionsString.second
         );
 
         const auto modBody = utils::FetchUrl(modUrl);
@@ -86,12 +86,12 @@ namespace provisioner::platform
 
     std::string Modrinth::Search(const std::string& query)
     {
-        const auto& project = project::Project::GetInstance();
+        REQUIRE_PROJECT_LOAD();
 
         const auto modUrl = std::format(
             R"(https://api.modrinth.com/v2/search?query={}&facets=%5B%5B%22project_type%3Amod%22%5D%2C%5B%22versions%3A{}%22%5D%2C%5B%22categories%3A{}%22%5D%5D&limit=5)",
             query,
-            project.mData.minecraft.version,
+            project.mData.allowedVersionsString.first,
             project.mData.minecraft.type
         );
 
