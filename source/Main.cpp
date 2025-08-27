@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stacktrace>
 #include <CLI/CLI.hpp>
 #include <curl/curl.h>
 
@@ -51,7 +50,6 @@ int main(const int argc, char** argv)
     catch (std::exception& e)
     {
         std::cerr << e.what() << std::endl;
-        std::cerr << std::stacktrace::current() << std::endl;
         return 1;
     }
 #endif
