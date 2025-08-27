@@ -38,7 +38,7 @@ namespace provisioner::project
         file << json.dump(4);
     }
 
-    void Project::Compile(const std::filesystem::path& path)
+    void Project::Compile(const std::filesystem::path& path) const
     {
         if (std::filesystem::exists(path))
             std::filesystem::remove_all(path);
@@ -52,7 +52,12 @@ namespace provisioner::project
                 continue;
 
             const auto destPath = path / includePath;
-            std::filesystem::copy_file(includePath, destPath, std::filesystem::copy_options::overwrite_existing);
+            if (std::filesystem::is_regular_file(includePath))
+                std::filesystem::copy_file(includePath, destPath, std::filesystem::copy_options::overwrite_existing);
+            else
+                std::filesystem::copy(includePath, destPath,
+                                      std::filesystem::copy_options::recursive |
+                                      std::filesystem::copy_options::overwrite_existing);
         }
 
         const auto modsPath = path / "mods";
@@ -63,6 +68,11 @@ namespace provisioner::project
             mods::ModData modData = nlohmann::json::parse(content);
 
             mods::Mod::Download(modData);
+
+            const std::string modFileName = (modData.slug + ".jar");
+            const std::filesystem::path cachePath = ".cache";
+            const std::filesystem::path modPath = cachePath / modFileName;
+            std::filesystem::copy_file(modPath, modsPath / modFileName, std::filesystem::copy_options::overwrite_existing);
         }
     }
 }

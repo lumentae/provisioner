@@ -1,2 +1,4 @@
 .idea
 source.gen.old
+/examples/K8/.cache/
+/examples/K8/compiled/

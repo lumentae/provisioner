@@ -72,17 +72,18 @@ namespace provisioner::project::mods
         REQUIRE_PROJECT();
 
         const std::filesystem::path cachePath = ".cache";
-        const std::filesystem::path modsPath = cachePath / "mods";
         if (!std::filesystem::exists(cachePath))
             std::filesystem::create_directory(cachePath);
 
-        if (std::filesystem::exists(cachePath / (mod.slug + ".jar")))
+        const std::filesystem::path modPath = cachePath / (mod.slug + ".jar");
+
+        if (std::filesystem::exists(modPath))
         {
             spdlog::info("Mod {} already downloaded", mod.name);
             return;
         }
 
         spdlog::info("Downloading mod {}", mod.name);
-        utils::DownloadFile(mod.download.url, modsPath / (mod.slug + ".jar"));
+        utils::DownloadFile(mod.download.url, modPath);
     }
 }

@@ -9,8 +9,7 @@ namespace provisioner::commands
     public:
         struct Options
         {
-            std::string name;
-            std::filesystem::path folder;
+            std::filesystem::path folder = std::filesystem::current_path() / "compiled";
         };
 
         CompileCommand() = default;

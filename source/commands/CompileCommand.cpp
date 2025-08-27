@@ -9,9 +9,7 @@ namespace provisioner::commands
     {
         const auto opt = std::make_shared<Options>();
 
-        sub->add_option("name", opt->name)->required()->allow_extra_args(true);
-        sub->add_flag("-f,--folder", opt->folder, "The folder to compile to")->
-             default_val(std::filesystem::current_path());
+        sub->add_flag("-f,--folder", opt->folder, "The folder to compile to");
         sub->callback([opt]()
         {
             Execute(opt);
