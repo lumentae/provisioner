@@ -42,5 +42,5 @@ namespace provisioner::project::mods
         std::vector<ModRequirement> requirements = {};
     };
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModData, name, id, slug, download, update, requirements)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModData, name, id, slug, platform, download, update, requirements)
 };

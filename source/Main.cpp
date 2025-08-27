@@ -6,6 +6,8 @@
 #include "Common.h"
 #include "commands/NewCommand.h"
 #include "commands/AddCommand.h"
+#include "commands/IncludeCommand.h"
+#include "commands/CompileCommand.h"
 #include "project/Project.h"
 #include "utils/String.h"
 
@@ -38,6 +40,8 @@ int main(const int argc, char** argv)
 
         REGISTER_COMMAND(New, "Create a new project")
         REGISTER_COMMAND(Add, "Adds a mod to a project")
+        REGISTER_COMMAND(Include, "Includes a file in a project")
+        REGISTER_COMMAND(Compile, "Compiles the project into a server")
 
         app.require_subcommand(1);
 

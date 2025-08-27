@@ -2,6 +2,7 @@
 
 #include <nlohmann/json.hpp>
 #include <utils/File.h>
+#include <utils/Prompt.h>
 #include <Common.h>
 
 #include "Globals.h"
@@ -70,10 +71,61 @@ namespace provisioner::platform
         );
 
         const auto modBody = utils::FetchUrl(modUrl);
+        if (modBody.empty())
+            return "";
+
         nlohmann::json modJson = nlohmann::json::parse(modBody);
+        if (modJson.empty())
+            return "";
+
         std::string latestVersion = modJson[0]["id"];
         std::string latestVersionReadable = modJson[0]["version_number"];
 
         return latestVersion;
+    }
+
+    std::string Modrinth::Search(const std::string& query)
+    {
+        const auto& project = project::Project::GetInstance();
+
+        const auto modUrl = std::format(
+            R"(https://api.modrinth.com/v2/search?query={}&facets=%5B%5B%22project_type%3Amod%22%5D%2C%5B%22versions%3A{}%22%5D%2C%5B%22categories%3A{}%22%5D%5D&limit=5)",
+            query,
+            project.mData.minecraft.version,
+            project.mData.minecraft.type
+        );
+
+        const auto modBody = utils::FetchUrl(modUrl);
+        nlohmann::json modJson = nlohmann::json::parse(modBody);
+
+        const auto hits = modJson["hits"];
+        if (hits.empty())
+        {
+            throw std::runtime_error(std::format("No mods found for {}", query));
+        }
+        if (hits.size() == 1)
+        {
+            return hits[0]["slug"];
+        }
+
+        spdlog::info("Found mods:");
+        auto index = 1;
+        for (const auto& hit : hits)
+        {
+            spdlog::info("[{}] {} ({})\n\t{}", index, hit["title"].get<std::string>(), hit["slug"].get<std::string>(),
+                         hit["description"].get<std::string>());
+            index++;
+        }
+
+        const auto selected = utils::Prompt<int>("Select a mod", 1);
+        if (selected < 1 || selected > hits.size())
+        {
+            throw std::runtime_error("Invalid selection");
+        }
+
+        spdlog::info("Selected mod: {}", hits[selected - 1]["title"].get<std::string>());
+
+        const auto& hit = hits[selected - 1];
+        return hit["slug"];
     }
 }

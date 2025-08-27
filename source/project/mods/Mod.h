@@ -7,6 +7,9 @@ namespace provisioner::project::mods
     class Mod
     {
     public:
-        static void AddMod(const std::string& id, std::string version);
+        static void Add(std::string id, std::string version);
+        static void Remove(const std::string& id);
+        static void Update(const std::string& id);
+        static void Download(const ModData& mod);
     };
 }

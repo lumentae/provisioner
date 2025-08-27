@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include <curl/curl.h>
+#include <spdlog/spdlog.h>
 
 namespace provisioner::utils
 {
@@ -75,6 +76,13 @@ namespace provisioner::utils
             throw std::runtime_error("curl_easy_perform() failed: " + std::string(curl_easy_strerror(res)));
         }
 
+        long http_code = 0;
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
+        if (http_code != 200)
+        {
+            spdlog::critical("HTTP request failed: {}", http_code);
+        }
+
         curl_easy_cleanup(curl);
         return response;
     }
@@ -101,5 +109,22 @@ namespace provisioner::utils
         }
         file << content;
         file.close();
+    }
+
+    static std::vector<std::filesystem::path> GetFilesByExtension(const std::filesystem::path& path,
+                                                                  const std::string& filter)
+    {
+        std::vector<std::filesystem::path> files;
+
+        for (const auto& entry : std::filesystem::directory_iterator(path))
+        {
+            if (!entry.is_regular_file())
+                continue;
+
+            if (entry.path().extension().string().find(filter) != std::string::npos)
+                files.push_back(entry.path());
+        }
+
+        return files;
     }
 }

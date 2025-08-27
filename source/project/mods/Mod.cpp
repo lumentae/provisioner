@@ -3,10 +3,11 @@
 #include <spdlog/spdlog.h>
 
 #include "utils/File.h"
+#include "utils/Prompt.h"
 
 namespace provisioner::project::mods
 {
-    void Mod::AddMod(const std::string& id, std::string version = "latest")
+    void Mod::Add(std::string id, std::string version = "latest")
     {
         const std::filesystem::path modPath = "mods";
         if (!std::filesystem::exists(modPath))
@@ -15,10 +16,16 @@ namespace provisioner::project::mods
         if (version == "latest")
             version = globals::Platform->GetLatestVersion(id);
 
+        if (version.empty())
+        {
+            id = globals::Platform->Search(id);
+            version = globals::Platform->GetLatestVersion(id);
+        }
+
         auto modData = globals::Platform->GetModData(id, version);
         if (std::filesystem::exists(modPath / (modData.slug + ".pm")))
         {
-            spdlog::warn("Mod {} ({}) already exists", modData.name, modData.id);
+            spdlog::info("Mod {} ({}) already exists", modData.name, modData.id);
             return;
         }
 
@@ -26,10 +33,50 @@ namespace provisioner::project::mods
 
         for (const auto& requirement : modData.requirements)
         {
-            AddMod(requirement.project_id);
+            if (requirement.dependency_type == "optional")
+                continue;
+
+            Add(requirement.project_id);
         }
 
         const nlohmann::json json = modData;
         utils::WriteFile(modPath / (modData.slug + ".pm"), json.dump(4));
+    }
+
+    void Mod::Remove(const std::string& id)
+    {
+        const std::filesystem::path modPath = "mods";
+        if (!std::filesystem::exists(modPath))
+            std::filesystem::create_directory(modPath);
+
+        const auto modFile = modPath / (id + ".pm");
+        if (!std::filesystem::exists(modFile))
+        {
+            spdlog::warn("Mod {} does not exist", id);
+            return;
+        }
+
+        std::filesystem::remove(modFile);
+    }
+
+    void Mod::Update(const std::string& id)
+    {
+    }
+
+    void Mod::Download(const ModData& mod)
+    {
+        const std::filesystem::path cachePath = ".cache";
+        const std::filesystem::path modsPath = cachePath / "mods";
+        if (!std::filesystem::exists(cachePath))
+            std::filesystem::create_directory(cachePath);
+
+        if (std::filesystem::exists(cachePath / (mod.slug + ".jar")))
+        {
+            spdlog::info("Mod {} already downloaded", mod.name);
+            return;
+        }
+
+        spdlog::info("Downloading mod {}", mod.name);
+        utils::DownloadFile(mod.download.url, modsPath / (mod.slug + ".jar"));
     }
 }

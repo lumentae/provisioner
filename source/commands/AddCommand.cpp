@@ -20,8 +20,8 @@ namespace provisioner::commands
 
     void AddCommand::Execute(const std::shared_ptr<Options>& options)
     {
-        REQUIRE_PROJECT
+        REQUIRE_PROJECT()
 
-            project::mods::Mod::AddMod(options->name, "latest");
+        project::mods::Mod::Add(options->name, "latest");
     }
 }

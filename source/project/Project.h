@@ -24,6 +24,7 @@ namespace provisioner::project
 
         void Load();
         void Save();
+        void Compile(const std::filesystem::path& path);
 
         ProjectData mData;
 
@@ -32,7 +33,7 @@ namespace provisioner::project
     };
 }
 
-#define REQUIRE_PROJECT \
+#define REQUIRE_PROJECT() \
     auto& project = project::Project::GetInstance(); \
     if (project.mData.name.empty()) \
     { \
