@@ -8,9 +8,10 @@ namespace provisioner::project
     {
         std::string version = "latest";
         std::string type = "vanilla";
+        std::string loaderVersion = "latest";
     };
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(MinecraftOptions, version, type)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(MinecraftOptions, version, type, loaderVersion)
 
     struct ProjectData
     {

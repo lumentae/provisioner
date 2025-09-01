@@ -1,11 +1,9 @@
 #pragma once
-#include <string>
-#include <fstream>
-#include <stdexcept>
 #include <nlohmann/json.hpp>
 #include <utility>
 
 #include "ProjectData.h"
+#include "loader/ILoader.h"
 
 namespace provisioner::project
 {
@@ -27,6 +25,7 @@ namespace provisioner::project
         void Compile(const std::filesystem::path& path) const;
 
         ProjectData mData;
+        std::shared_ptr<loader::ILoader> mLoader;
 
     private:
         std::filesystem::path mJsonPath;

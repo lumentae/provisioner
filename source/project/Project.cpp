@@ -1,5 +1,6 @@
 #include "Project.h"
 
+#include "loader/Fabric.h"
 #include "mods/Mod.h"
 #include "utils/File.h"
 #include "utils/String.h"
@@ -24,6 +25,8 @@ namespace provisioner::project
 
         mData.allowedVersionsString.first = utils::Join(allowedVersionsCopy, ",");
         mData.allowedVersionsString.second = utils::Join(allowedVersionsCopy, "%22,%22");
+
+        mLoader = std::make_shared<loader::Fabric>();
     }
 
     void Project::Save()
@@ -74,5 +77,7 @@ namespace provisioner::project
             const std::filesystem::path modPath = cachePath / modFileName;
             std::filesystem::copy_file(modPath, modsPath / modFileName, std::filesystem::copy_options::overwrite_existing);
         }
+
+        mLoader->Download(path / "server.jar");
     }
 }
