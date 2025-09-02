@@ -35,13 +35,16 @@ namespace provisioner::utils
 
     inline std::string EncodeUrl(const std::string& str)
     {
-        if(CURL* curl = curl_easy_init()) {
-            if(char* output = curl_easy_escape(curl, str.c_str(), str.length())) {
-                return std::string(output);
+        std::string result;
+        if (CURL* curl = curl_easy_init())
+        {
+            if (char* output = curl_easy_escape(curl, str.c_str(), str.length()))
+            {
+                result = output;
                 curl_free(output);
             }
             curl_easy_cleanup(curl);
         }
-        return "";
+        return result;
     }
 }
