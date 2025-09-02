@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "project/Project.h"
+#include "utils/String.h"
 
 namespace provisioner::platform
 {
@@ -88,10 +89,20 @@ namespace provisioner::platform
     {
         REQUIRE_PROJECT_LOAD();
 
+        auto allowedVersionsCopy = project.mData.allowedVersions;
+        allowedVersionsCopy.emplace_back(project.mData.minecraft.version);
+
+        std::string versions;
+        for (const auto& allowedVersion : allowedVersionsCopy)
+        {
+            versions += "\"versions:" + allowedVersion + "\",";
+        }
+        versions.pop_back();
+
         const auto modUrl = std::format(
-            R"(https://api.modrinth.com/v2/search?query={}&facets=%5B%5B%22project_type%3Amod%22%5D%2C%5B%22versions%3A{}%22%5D%2C%5B%22categories%3A{}%22%5D%5D&limit=5)",
-            query,
-            project.mData.allowedVersionsString.first,
+            R"(https://api.modrinth.com/v2/search?query={}&facets=%5B%5B%22project_type%3Amod%22%5D%2C%5B{}%5D%2C%5B%22categories%3A{}%22%5D%5D&limit=5)",
+            utils::EncodeUrl(query),
+            utils::EncodeUrl(versions),
             project.mData.minecraft.type
         );
 

@@ -15,14 +15,8 @@ namespace provisioner::project::mods
         if (!std::filesystem::exists(modPath))
             std::filesystem::create_directory(modPath);
 
-        if (version == "latest")
-            version = globals::Platform->GetLatestVersion(id);
-
-        if (version.empty())
-        {
-            id = globals::Platform->Search(id);
-            version = globals::Platform->GetLatestVersion(id);
-        }
+        id = globals::Platform->Search(id);
+        version = globals::Platform->GetLatestVersion(id);
 
         auto modData = globals::Platform->GetModData(id, version);
         if (std::filesystem::exists(modPath / (modData.slug + ".pm")))

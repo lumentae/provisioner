@@ -52,7 +52,10 @@ namespace provisioner::project
         {
             const auto includePath = std::filesystem::path(include);
             if (!std::filesystem::exists(includePath))
+            {
+                spdlog::warn("Include {} does not exist", include);
                 continue;
+            }
 
             const auto destPath = path / includePath;
             if (std::filesystem::is_regular_file(includePath))
@@ -79,5 +82,7 @@ namespace provisioner::project
         }
 
         mLoader->Download(path / "server.jar");
+
+        spdlog::info("Compiled project to {}", path.string());
     }
 }
