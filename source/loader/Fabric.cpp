@@ -10,14 +10,20 @@ namespace provisioner::loader
         REQUIRE_PROJECT()
 
         const auto latestInstallerVersion = GetLatestInstaller();
-        spdlog::info("Downloading Fabric {} installer", latestInstallerVersion);
-
         const std::filesystem::path cachePath = ".cache";
         const auto cacheFile = cachePath / ("fabric-" + latestInstallerVersion + ".jar");
 
+        if (std::filesystem::exists(cacheFile))
+        {
+            spdlog::info("Using cached Fabric installer at {}", cacheFile.string());
+            std::filesystem::copy_file(cacheFile, path, std::filesystem::copy_options::overwrite_existing);
+            return;
+        }
+
+        spdlog::info("Downloading Fabric {} installer", latestInstallerVersion);
         const auto metaUrl = std::format("https://meta.fabricmc.net/v2/versions/loader/{}/{}/{}/server/jar",
-                                         project.mData.minecraft.type,
                                          project.mData.minecraft.version,
+                                         project.mData.minecraft.loaderVersion,
                                          latestInstallerVersion
         );
 

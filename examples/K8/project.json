@@ -8,8 +8,8 @@
     ],
     "minecraft": {
       "loaderVersion": "0.17.2",
-        "type": "fabric",
-        "version": "1.21.8"
+      "type": "fabric",
+      "version": "1.21.8"
     },
     "name": "K8"
 }
