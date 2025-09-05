@@ -10,7 +10,7 @@ namespace provisioner::commands
     {
         const auto opt = std::make_shared<Options>();
 
-        sub->add_flag("-n,--name", opt->name);
+        sub->add_flag("-n,--name", opt->name, "Name of the mod to update");
         sub->callback([opt]()
         {
             Execute(opt);
