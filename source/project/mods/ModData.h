@@ -1,6 +1,7 @@
 #pragma once
 
-#include <utils/Json.h>
+#include <optional>
+#include <nlohmann/json.hpp>
 
 namespace provisioner::project::mods
 {
