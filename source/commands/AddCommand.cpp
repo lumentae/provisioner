@@ -10,8 +10,8 @@ namespace provisioner::commands
         const auto opt = std::make_shared<Options>();
 
         sub->add_option("name", opt->name)->required()->allow_extra_args(true);
-        sub->add_flag("-p,--platform", opt->platform, "Which platform to download from")->
-             default_val(false);
+        sub->add_flag("-p,--platform", opt->platform, "Which platform to download from")->default_val(false);
+        sub->add_option("-v,--version", opt->version, "The version to download")->default_val("latest");
         sub->callback([opt]()
         {
             Execute(opt);
@@ -22,6 +22,8 @@ namespace provisioner::commands
     {
         REQUIRE_PROJECT()
 
-        project::mods::Mod::Add(options->name, "latest");
+        // TODO: Use platform
+
+        project::mods::Mod::Add(options->name, options->version);
     }
 }

@@ -7,7 +7,7 @@
 
 namespace provisioner::project::mods
 {
-    void Mod::Add(std::string id, std::string version = "latest")
+    void Mod::Add(std::string id, std::string version, const bool noSearch)
     {
         REQUIRE_PROJECT();
 
@@ -15,8 +15,11 @@ namespace provisioner::project::mods
         if (!std::filesystem::exists(modPath))
             std::filesystem::create_directory(modPath);
 
-        id = globals::Platform->Search(id);
-        version = globals::Platform->GetLatestVersion(id);
+        if (!noSearch)
+            id = globals::Platform->Search(id);
+
+        if (version == "latest")
+            version = globals::Platform->GetLatestVersion(id);
 
         auto modData = globals::Platform->GetModData(id, version);
         if (std::filesystem::exists(modPath / (modData.slug + ".pm")))
@@ -27,12 +30,13 @@ namespace provisioner::project::mods
 
         spdlog::info("Adding mod {} ({})", modData.name, modData.id);
 
-        for (const auto& requirement : modData.requirements)
+        for (const auto& [project_id, version_id, dependency_type] : modData.requirements)
         {
-            if (requirement.dependency_type == "optional")
+            if (dependency_type == "optional")
                 continue;
 
-            Add(requirement.project_id);
+            const auto dependencyVersion = version_id.has_value() ? version_id.value() : "latest";
+            Add(project_id, dependencyVersion, true);
         }
 
         const nlohmann::json json = modData;
@@ -59,6 +63,26 @@ namespace provisioner::project::mods
 
     void Mod::Update(const std::string& id)
     {
+        const std::filesystem::path modPath = "mods";
+        if (!std::filesystem::exists(modPath))
+            std::filesystem::create_directory(modPath);
+
+        const auto modFile = modPath / (id + ".pm");
+        if (!std::filesystem::exists(modFile))
+        {
+            spdlog::warn("Mod {} does not exist", id);
+            return;
+        }
+
+        const std::string version = globals::Platform->GetLatestVersion(id);
+        const ModData modData = nlohmann::json::parse(utils::ReadFile(modFile));
+
+        spdlog::debug("Latest version for mod {} is {} (installed {})", id, version, modData.update.version);
+        if (modData.update.version == version)
+            return;
+
+        std::filesystem::remove(modFile);
+        Add(id, version, true);
     }
 
     void Mod::Download(const ModData& mod)

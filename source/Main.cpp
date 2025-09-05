@@ -7,15 +7,14 @@
 #include "commands/AddCommand.h"
 #include "commands/IncludeCommand.h"
 #include "commands/CompileCommand.h"
+#include "commands/UpdateCommand.h"
 #include "project/Project.h"
 #include "utils/String.h"
 
 /* TODO:
  * Implement plugin support
  * Add commands for server control
- * Add build command
  * Add export command (for .mrpack)
- * Auto accept eula option
  */
 
 int main(const int argc, char** argv)
@@ -41,6 +40,8 @@ int main(const int argc, char** argv)
         REGISTER_COMMAND(Add, "Adds a mod to a project")
         REGISTER_COMMAND(Include, "Includes a file in a project")
         REGISTER_COMMAND(Compile, "Compiles the project into a server")
+        REGISTER_COMMAND(Update, "Upgrades mods in a project")
+        REGISTER_ALIAS(Upgrade, Update)
 
         app.require_subcommand(1);
 

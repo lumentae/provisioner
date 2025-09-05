@@ -1,11 +1,11 @@
 {
   "download": {
-    "sha1": "dc3e040fd9ce266e0beb97928d75816e5cec8ff7",
-    "sha512": "622f894586683a959355487161fc6b95221fbfaef3c4f24752a402e7d599336a85e5d332bea78ad173df2c8cf8dce2e9b99af3974df0cf1c559f43d9fc02c29b",
-    "size": 633821,
-    "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/Bogviccn/ForgeConfigAPIPort-v21.8.0-1.21.8-Fabric.jar"
+    "sha1": "07d6167870a7f7864b987e07a09229a9370e2701",
+    "sha512": "f7817506655bb52d9a53a1d6e25f0e9c1159e6f4137d363a9f79c5f267bfa96612898369598e29d77157e428296c7b75227e226fef93c6a98820c789c0ed1102",
+    "size": 635376,
+    "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/daREdLQt/ForgeConfigAPIPort-v21.8.1-1.21.8-Fabric.jar"
   },
-  "id": "ohNO6lps",
+  "id": "forge-config-api-port",
   "name": "Forge Config API Port",
   "platform": "modrinth",
   "requirements": [
@@ -17,7 +17,7 @@
   ],
   "slug": "forge-config-api-port",
   "update": {
-    "id": "ohNO6lps",
-    "version": "Bogviccn"
+    "id": "forge-config-api-port",
+    "version": "daREdLQt"
   }
 }

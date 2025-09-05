@@ -4,18 +4,16 @@
 
 namespace provisioner::commands
 {
-    class AddCommand final
+    class UpdateCommand final
     {
     public:
         struct Options
         {
             std::string name;
-            std::string platform;
-            std::string version;
         };
 
-        AddCommand() = default;
-        ~AddCommand() = default;
+        UpdateCommand() = default;
+        ~UpdateCommand() = default;
         static void Register(CLI::App* sub);
         static void Execute(const std::shared_ptr<Options>& options);
     };

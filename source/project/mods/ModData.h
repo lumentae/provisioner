@@ -6,9 +6,9 @@ namespace provisioner::project::mods
 {
     struct ModRequirement
     {
-        std::string project_id = "";
+        std::string project_id;
         std::optional<std::string> version_id = "";
-        std::string dependency_type = "";
+        std::string dependency_type;
     };
 
     NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModRequirement, project_id, version_id, dependency_type)
@@ -34,9 +34,9 @@ namespace provisioner::project::mods
     struct ModData
     {
         std::string name = "Unnamed";
-        std::string id = "";
-        std::string slug = "";
-        std::string platform = "";
+        std::string id;
+        std::string slug;
+        std::string platform;
         ModDownload download = ModDownload{};
         ModUpdate update = ModUpdate{};
         std::vector<ModRequirement> requirements = {};
