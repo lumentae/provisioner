@@ -2,21 +2,27 @@
 
 **Provisioner** is a C++ command-line tool for setting up and managing **Minecraft servers**
 
-It makes creating, starting, stopping and configuring servers fast and easy!
+It makes creating and configuring servers fast and easy!
 
 ## Features
-- Quickly create new Minecraft servers with custom settings
-- Supports Fabric, Forge, Paper, Vanilla and more
-- Manage plugins and configuration templates with ease
-- Start and stop servers from the command line
+
+- Quickly create new Minecraft servers
+- Currently only supports Fabric servers and Modrinth mods
+- Manage mods and configuration with ease
 
 ## Example Usage
 ```bash
 # Create a new server
 provisioner new myserver
 
-# Start the server
-provisioner start myserver
+# Add a mod
+provisioner add mymod
 
-# Stop the server
-provisioner stop myserver
+# Updates mods
+provisioner update
+
+# Compile the server
+provisioner compile
+
+# Include a file or directory
+provisioner include myfolder/myfile.json
