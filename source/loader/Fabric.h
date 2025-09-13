@@ -8,5 +8,6 @@ namespace provisioner::loader
     public:
         void Download(const std::filesystem::path& path) override;
         static std::string GetLatestInstaller();
+        static std::string GetLatestLoader();
     };
 }

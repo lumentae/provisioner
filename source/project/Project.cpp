@@ -27,6 +27,8 @@ namespace provisioner::project
         mData.allowedVersionsString.second = utils::Join(allowedVersionsCopy, "%22,%22");
 
         mLoader = std::make_shared<loader::Fabric>();
+
+        ENSURE_STRING(mData.minecraft.type, "fabric", "neoforge", "vanilla");
     }
 
     void Project::Save()

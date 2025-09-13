@@ -45,3 +45,17 @@ namespace provisioner::project
     { \
         throw std::runtime_error("No project found. Please run 'provisioner new' to create a new project."); \
     }
+
+#define ENSURE_STRING(val, ...) \
+    do { \
+        bool __ok = false; \
+        for (const auto __s : {__VA_ARGS__}) { \
+            if (val == __s) { \
+                __ok = true; \
+                break; \
+            } \
+        } \
+        if (!__ok) { \
+            throw std::runtime_error(std::format("{} failed, allowed values are {}", #val, __VA_ARGS__)); \
+        } \
+    } while (0)
