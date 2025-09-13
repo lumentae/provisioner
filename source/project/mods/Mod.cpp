@@ -32,7 +32,7 @@ namespace provisioner::project::mods
 
         for (const auto& [project_id, version_id, dependency_type] : modData.requirements)
         {
-            if (dependency_type == "optional")
+            if (dependency_type == "optional" || dependency_type == "incompatible")
                 continue;
 
             const auto dependencyVersion = version_id.has_value() ? version_id.value() : "latest";
