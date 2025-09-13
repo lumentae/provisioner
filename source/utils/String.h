@@ -47,4 +47,16 @@ namespace provisioner::utils
         }
         return result;
     }
+
+    inline std::vector<std::string> Split(const std::string& str, const std::string& delim)
+    {
+        std::vector<std::string> tokens;
+        std::string token;
+        std::istringstream tokenStream(str);
+        while (std::getline(tokenStream, token, delim[0]))
+        {
+            tokens.push_back(token);
+        }
+        return tokens;
+    }
 }

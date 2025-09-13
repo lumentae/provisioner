@@ -26,10 +26,11 @@ namespace provisioner::loader
             loaderVersion = GetLatestLoader();
         }
 
-        const auto metaUrl = std::format("https://meta.fabricmc.net/v2/versions/loader/{}/{}/{}/server/jar",
-                                         project.mData.minecraft.version,
-                                         loaderVersion,
-                                         latestInstallerVersion
+        const auto metaUrl = std::format(
+            "https://meta.fabricmc.net/v2/versions/loader/{}/{}/{}/server/jar",
+            project.mData.minecraft.version,
+            loaderVersion,
+            latestInstallerVersion
         );
 
         spdlog::info("Downloading Fabric {} installer from {}", latestInstallerVersion, metaUrl);
