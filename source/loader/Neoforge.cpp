@@ -17,21 +17,26 @@ namespace provisioner::loader
         const std::filesystem::path cachePath = ".cache";
         const auto cacheFile = cachePath / ("neoforge-" + installerVersion + ".jar");
 
-        if (std::filesystem::exists(cacheFile))
+        if (!std::filesystem::exists(cacheFile))
         {
-            spdlog::info("Using cached Neoforge installer at {}", cacheFile.string());
+            const auto installerUrl = std::format(
+                "https://maven.neoforged.net/releases/net/neoforged/neoforge/{0}/neoforge-{0}-installer.jar",
+                installerVersion
+            );
+
+            spdlog::info("Downloading Neoforge {} installer from {}", installerVersion, installerUrl);
+            utils::DownloadFile(installerUrl, cacheFile);
             std::filesystem::copy_file(cacheFile, path, std::filesystem::copy_options::overwrite_existing);
-            return;
         }
 
-        const auto installerUrl = std::format(
-            "https://maven.neoforged.net/releases/net/neoforged/neoforge/{0}/neoforge-{0}-installer.jar",
-            installerVersion
-        );
-
-        spdlog::info("Downloading Neoforge {} installer from {}", installerVersion, installerUrl);
-        utils::DownloadFile(installerUrl, cacheFile);
+        spdlog::info("Using cached Neoforge installer at {}", cacheFile.string());
         std::filesystem::copy_file(cacheFile, path, std::filesystem::copy_options::overwrite_existing);
+
+        auto installCommand = std::format("java -jar {} --install-server {}", path.string(), path.parent_path().string());
+        spdlog::info("Running {}", installCommand);
+        std::system(installCommand.c_str());
+        std::filesystem::remove(path.parent_path() / "server.jar");
+        std::filesystem::remove(path.parent_path().parent_path() / "server.jar.log");
     }
 
     std::string Neoforge::GetLatestInstaller()
