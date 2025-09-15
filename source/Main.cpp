@@ -7,13 +7,15 @@
 #include "commands/AddCommand.h"
 #include "commands/IncludeCommand.h"
 #include "commands/CompileCommand.h"
+#include "commands/RemoveCommand.h"
 #include "commands/UpdateCommand.h"
+#include "commands/ExportCommand.h"
+#include "commands/ListCommand.h"
 #include "project/Project.h"
 #include "utils/String.h"
 
 /* TODO:
  * Implement plugin support
- * Add commands for server control
  * Add export command (for .mrpack)
  */
 
@@ -41,7 +43,13 @@ int main(const int argc, char** argv)
         REGISTER_COMMAND(Include, "Includes a file in a project")
         REGISTER_COMMAND(Compile, "Compiles the project into a server")
         REGISTER_COMMAND(Update, "Upgrades mods in a project")
+        REGISTER_COMMAND(Remove, "Removes a mod from a project")
+        REGISTER_COMMAND(Export, "Exports a project to a .mrpack file")
+        REGISTER_COMMAND(List, "Lists all mods in a project")
+
         REGISTER_ALIAS(Upgrade, Update)
+        REGISTER_ALIAS(Install, Add)
+        REGISTER_ALIAS(Uninstall, Remove)
 
         app.require_subcommand(1);
 
