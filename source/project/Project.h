@@ -57,6 +57,6 @@ namespace provisioner::project
         } \
         if (!__ok) { \
             std::vector<std::string> allowedValues = {__VA_ARGS__}; \
-            throw std::runtime_error(std::format("{} failed, allowed values are [{}]", #val, Join(allowedValues, ", "))); \
+            throw std::runtime_error(std::format("{} failed, allowed values are [{}]", #val, utils::Join(allowedValues, ", "))); \
         } \
     } while (0)

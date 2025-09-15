@@ -3,6 +3,7 @@
 #include "project/Project.h"
 #include "project/mods/Mod.h"
 #include "utils/File.h"
+#include "utils/String.h"
 
 namespace provisioner::commands
 {
