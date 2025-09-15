@@ -8,12 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: windows-latest
-
-    steps:
-    - name: Build project
-      uses: lumentae/actions/.github/workflows/build-cpp.yml@main
-      with: 
-        vcpkg_packages: "CLI11 spdlog CURL nlohmann-json"
+  build:    
+    uses: lumentae/actions/.github/workflows/build-cpp.yml@main
+    with: 
+      vcpkg_packages: CLI11 spdlog CURL nlohmann-json
     
