@@ -22,9 +22,10 @@ namespace provisioner::commands
     {
         REQUIRE_PROJECT()
 
-        ENSURE_STRING(options->type, "mrpack");
+        const auto outputType = options->type;
+        ENSURE_STRING(outputType, "mrpack");
 
-        auto exportFileName = project.mData.name + options->type;
+        auto exportFileName = project.mData.name + outputType;
         if (!options->path.empty())
         {
             exportFileName = options->path;
