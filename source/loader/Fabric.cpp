@@ -13,17 +13,19 @@ namespace provisioner::loader
         const std::filesystem::path cachePath = ".cache";
         const auto cacheFile = cachePath / ("fabric-" + latestInstallerVersion + ".jar");
 
+        auto loaderVersion = project.mData.minecraft.loaderVersion;
+        if (project.mData.minecraft.loaderVersion == "latest")
+        {
+            loaderVersion = GetLatestLoader();
+            project.mData.minecraft.loaderVersion = loaderVersion;
+            project.Save();
+        }
+
         if (std::filesystem::exists(cacheFile))
         {
             spdlog::info("Using cached Fabric installer at {}", cacheFile.string());
             std::filesystem::copy_file(cacheFile, path, std::filesystem::copy_options::overwrite_existing);
             return;
-        }
-
-        auto loaderVersion = project.mData.minecraft.loaderVersion;
-        if (project.mData.minecraft.loaderVersion == "latest")
-        {
-            loaderVersion = GetLatestLoader();
         }
 
         const auto metaUrl = std::format(

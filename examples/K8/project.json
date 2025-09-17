@@ -10,8 +10,10 @@
         "whitelist.json"
     ],
     "minecraft": {
+        "loaderVersion": "0.17.2",
         "type": "fabric",
         "version": "1.21.8"
     },
-    "name": "K8"
+    "name": "K8",
+    "version": "1.0.0"
 }

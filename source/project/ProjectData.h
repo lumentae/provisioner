@@ -16,6 +16,7 @@ namespace provisioner::project
     struct ProjectData
     {
         std::string name = "Unnamed";
+        std::string version = "1.0.0";
         MinecraftOptions minecraft = MinecraftOptions{};
         std::vector<std::string> includes = {};
         std::vector<std::string> allowedVersions = {};
@@ -23,5 +24,5 @@ namespace provisioner::project
         std::pair<std::string, std::string> allowedVersionsString = std::make_pair("", "");
     };
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ProjectData, name, minecraft, includes, allowedVersions)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ProjectData, name, version, minecraft, includes, allowedVersions)
 };

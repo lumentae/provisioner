@@ -7,7 +7,7 @@ It makes creating and configuring servers fast and easy!
 ## Features
 
 - Quickly create new Minecraft servers
-- Currently only supports Fabric servers and Modrinth mods
+- Currently only supports Fabric, Neoforge and Modrinth mods
 - Manage mods and configuration with ease
 
 ## Example Usage

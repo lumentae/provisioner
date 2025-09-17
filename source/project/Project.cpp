@@ -1,9 +1,11 @@
 #include "Project.h"
 
 #include <execution>
+#include <libzippp.h>
 
 #include "loader/Fabric.h"
 #include "loader/Neoforge.h"
+#include "platform/modrinth/ModrinthIndexData.h"
 #include "mods/Mod.h"
 #include "utils/File.h"
 #include "utils/String.h"
@@ -93,5 +95,49 @@ namespace provisioner::project
         mLoader->Download(path / "server.jar");
 
         spdlog::info("Compiled project to {}", path.string());
+    }
+
+    void Project::Export(const std::string& type, const std::filesystem::path& path) const
+    {
+        const auto tempPath = std::filesystem::temp_directory_path() / "provisioner_temp";
+        Compile(tempPath);
+
+        if (type == "mrpack")
+        {
+            // TODO: Add overrides
+
+            if (std::filesystem::exists(path))
+                std::filesystem::remove(path);
+
+            libzippp::ZipArchive zip(path.string());
+            zip.open(libzippp::ZipArchive::Write);
+
+            platform::modrinth::ModrinthIndexData indexData;
+            for (const auto& file : utils::GetFilesByExtension(std::filesystem::current_path() / "mods", "pm"))
+            {
+                std::string fileContent = utils::ReadFile(file);
+                mods::ModData modData = nlohmann::json::parse(fileContent);
+
+                platform::modrinth::ModrinthIndexFile indexFile = platform::modrinth::GetIndexFileFromModData(modData);
+                indexData.files.emplace_back(indexFile);
+            }
+
+            indexData.dependencies.emplace("minecraft", mData.minecraft.version);
+            indexData.dependencies.emplace(mData.minecraft.type + "-loader", mData.minecraft.loaderVersion);
+
+            std::string content = nlohmann::json(indexData).dump(4) + "\n";
+            if (!zip.addData("modrinth.index.json", content.c_str(), content.size()))
+            {
+                std::filesystem::remove_all(tempPath);
+                throw std::runtime_error("Failed to add modrinth.index.json");
+            }
+
+            zip.close();
+            spdlog::info("Exported project to {}", path.string());
+            return;
+        }
+
+        std::filesystem::remove_all(tempPath);
+        throw std::runtime_error("Unsupported export type: " + type);
     }
 }

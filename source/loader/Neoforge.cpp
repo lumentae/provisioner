@@ -14,6 +14,9 @@ namespace provisioner::loader
         if (installerVersion == "latest")
             installerVersion = GetLatestInstaller();
 
+        project.mData.minecraft.loaderVersion = installerVersion;
+        project.Save();
+
         const std::filesystem::path cachePath = ".cache";
         const auto cacheFile = cachePath / ("neoforge-" + installerVersion + ".jar");
 
@@ -32,7 +35,8 @@ namespace provisioner::loader
         spdlog::info("Using cached Neoforge installer at {}", cacheFile.string());
         std::filesystem::copy_file(cacheFile, path, std::filesystem::copy_options::overwrite_existing);
 
-        auto installCommand = std::format("java -jar {} --install-server {}", path.string(), path.parent_path().string());
+        auto installCommand = std::format("java -jar {} --install-server {}", path.string(),
+                                          path.parent_path().string());
         spdlog::info("Running {}", installCommand);
         std::system(installCommand.c_str());
         std::filesystem::remove(path.parent_path() / "server.jar");

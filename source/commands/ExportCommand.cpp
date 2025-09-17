@@ -5,6 +5,8 @@
 #include "utils/File.h"
 #include "utils/String.h"
 
+#include <libzippp/libzippp.h>
+
 namespace provisioner::commands
 {
     void ExportCommand::Register(CLI::App* sub)
@@ -12,7 +14,7 @@ namespace provisioner::commands
         const auto opt = std::make_shared<Options>();
 
         sub->add_option("path", opt->path, "Where to save the exported file to")->allow_extra_args(true);
-        sub->add_flag("-t,--type", opt->type, "The type of export to do")->default_val("mrpack");
+        sub->add_option("-t,--type", opt->type, "The type of export to do")->default_val("mrpack");
         sub->callback([opt]()
         {
             Execute(opt);
@@ -24,12 +26,12 @@ namespace provisioner::commands
         REQUIRE_PROJECT()
         ENSURE_STRING(options->type, "mrpack");
 
-        auto exportFileName = project.mData.name + options->type;
+        auto exportFile = project.mData.name + "." + options->type;
         if (!options->path.empty())
         {
-            exportFileName = options->path;
+            exportFile = options->path;
         }
 
-        throw std::runtime_error("Not implemented");
+        project.Export(options->type, exportFile);
     }
 }

@@ -23,6 +23,7 @@ namespace provisioner::project
         void Load();
         void Save();
         void Compile(const std::filesystem::path& path) const;
+        void Export(const std::string& type, const std::filesystem::path& path) const;
 
         ProjectData mData;
         std::shared_ptr<loader::ILoader> mLoader;
@@ -57,6 +58,6 @@ namespace provisioner::project
         } \
         if (!__ok) { \
             std::vector<std::string> allowedValues = {__VA_ARGS__}; \
-            throw std::runtime_error(std::format("{} failed, allowed values are [{}]", #val, utils::Join(allowedValues, ", "))); \
+            throw std::runtime_error(std::format("{} failed, allowed values are [{}], provided was {}", #val, utils::Join(allowedValues, ", "), val)); \
         } \
     } while (0)
