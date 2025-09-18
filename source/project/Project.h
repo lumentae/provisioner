@@ -4,6 +4,7 @@
 
 #include "ProjectData.h"
 #include "loader/ILoader.h"
+#include "utils/String.h"
 
 namespace provisioner::project
 {

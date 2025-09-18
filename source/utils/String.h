@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <string>
+#include <curl/curl.h>
 
 namespace provisioner::utils
 {

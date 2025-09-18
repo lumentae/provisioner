@@ -16,7 +16,6 @@
 
 /* TODO:
  * Implement plugin support
- * Add export command (for .mrpack)
  */
 
 int main(const int argc, char** argv)

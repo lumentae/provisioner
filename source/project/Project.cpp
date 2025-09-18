@@ -110,7 +110,11 @@ namespace provisioner::project
                 std::filesystem::remove(path);
 
             libzippp::ZipArchive zip(path.string());
-            zip.open(libzippp::ZipArchive::Write);
+            if (!zip.open(libzippp::ZipArchive::Write))
+            {
+                std::filesystem::remove_all(tempPath);
+                throw std::runtime_error("Failed to open zip file");
+            }
 
             platform::modrinth::ModrinthIndexData indexData;
             for (const auto& file : utils::GetFilesByExtension(std::filesystem::current_path() / "mods", "pm"))
@@ -130,6 +134,28 @@ namespace provisioner::project
             {
                 std::filesystem::remove_all(tempPath);
                 throw std::runtime_error("Failed to add modrinth.index.json");
+            }
+
+            for (const auto& include : mData.includes)
+            {
+                for (const auto& file : utils::GetFilesByExtension(include, "", true))
+                {
+                    auto relativePath = std::filesystem::relative(file, include).string();
+                    if (relativePath.back() == '.')
+                        relativePath.pop_back();
+
+                    auto zipPath = (std::filesystem::path("overrides") / include / relativePath).generic_string();
+                    if (zipPath.back() == '/')
+                        zipPath.pop_back();
+
+                    spdlog::info("Adding {} as {}", file.string(), zipPath);
+
+                    if (!zip.addFile(zipPath, file.string()))
+                    {
+                        std::filesystem::remove_all(tempPath);
+                        throw std::runtime_error("Failed to add " + file.string());
+                    }
+                }
             }
 
             zip.close();

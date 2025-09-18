@@ -112,16 +112,25 @@ namespace provisioner::utils
     }
 
     static std::vector<std::filesystem::path> GetFilesByExtension(const std::filesystem::path& path,
-                                                                  const std::string& filter)
+                                                                  const std::string& filter = "",
+                                                                  const bool recursive = false)
     {
-        std::vector<std::filesystem::path> files;
+        if (std::filesystem::is_regular_file(path))
+            return {path};
 
+        std::vector<std::filesystem::path> files;
         for (const auto& entry : std::filesystem::directory_iterator(path))
         {
             if (!entry.is_regular_file())
-                continue;
+            {
+                if (recursive && std::filesystem::is_directory(entry))
+                    files.append_range(GetFilesByExtension(entry.path(), filter, recursive));
+                else
+                    continue;
+            }
 
-            if (entry.path().extension().string().find(filter) != std::string::npos)
+            if ((entry.path().extension().string().find(filter) != std::string::npos) && !
+                std::filesystem::is_directory(entry))
                 files.push_back(entry.path());
         }
 

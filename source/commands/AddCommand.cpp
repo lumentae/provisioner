@@ -23,6 +23,7 @@ namespace provisioner::commands
         REQUIRE_PROJECT()
 
         // TODO: Use platform
+        ENSURE_STRING(options->platform, "modrinth", "direct");
 
         project::mods::Mod::Add(options->name, options->version);
     }
