@@ -124,9 +124,11 @@ namespace provisioner::utils
             if (!entry.is_regular_file())
             {
                 if (recursive && std::filesystem::is_directory(entry))
-                    files.append_range(GetFilesByExtension(entry.path(), filter, recursive));
-                else
-                    continue;
+                {
+                    const auto tail = GetFilesByExtension(entry.path(), filter, recursive);
+                    files.insert(files.end(), tail.cbegin(), tail.cend());
+                }
+                else continue;
             }
 
             if ((entry.path().extension().string().find(filter) != std::string::npos) && !
