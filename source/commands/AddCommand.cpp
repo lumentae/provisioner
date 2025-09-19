@@ -10,8 +10,9 @@ namespace provisioner::commands
         const auto opt = std::make_shared<Options>();
 
         sub->add_option("name", opt->name)->required()->allow_extra_args(true);
-        sub->add_flag("-p,--platform", opt->platform, "Which platform to download from")->default_val("modrinth");
         sub->add_option("-v,--version", opt->version, "The version to download")->default_val("latest");
+        DEFINE_DEFAULT_OPTIONS();
+
         sub->callback([opt]()
         {
             Execute(opt);
@@ -21,9 +22,7 @@ namespace provisioner::commands
     void AddCommand::Execute(const std::shared_ptr<Options>& options)
     {
         REQUIRE_PROJECT()
-
-        // TODO: Use platform
-        ENSURE_STRING(options->platform, "modrinth", "direct");
+        IMPLEMENT_DEFAULT_OPTIONS();
 
         project::mods::Mod::Add(options->name, options->version);
     }

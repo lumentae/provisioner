@@ -5,6 +5,9 @@
 #include "ProjectData.h"
 #include "loader/ILoader.h"
 #include "utils/String.h"
+#include "Globals.h"
+#include "platform/modrinth/Modrinth.h"
+#include "platform/direct/Direct.h"
 
 namespace provisioner::project
 {
@@ -62,3 +65,20 @@ namespace provisioner::project
             throw std::runtime_error(std::format("{} failed, allowed values are [{}], provided was {}", #val, utils::Join(allowedValues, ", "), val)); \
         } \
     } while (0)
+
+#define DEFINE_DEFAULT_OPTIONS() \
+    sub->add_option("-p,--platform", opt->platform, "Which platform to download from")->default_val("modrinth")
+
+#define DECLARE_DEFAULT_OPTIONS() \
+    std::string platform
+
+#define IMPLEMENT_DEFAULT_OPTIONS() \
+    ENSURE_STRING(options->platform, "modrinth", "direct"); \
+    if (options->platform == "modrinth") \
+    { \
+        globals::Platform = std::make_shared<provisioner::platform::modrinth::Modrinth>(); \
+    } \
+    else if (options->platform == "direct") \
+    { \
+        globals::Platform = std::make_shared<provisioner::platform::direct::Direct>(); \
+    }

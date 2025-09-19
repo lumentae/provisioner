@@ -9,7 +9,7 @@
 #include "project/Project.h"
 #include "utils/String.h"
 
-namespace provisioner::platform
+namespace provisioner::platform::modrinth
 {
     void Modrinth::Download(const std::string& id, const std::string& version)
     {

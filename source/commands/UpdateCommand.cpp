@@ -20,6 +20,7 @@ namespace provisioner::commands
     void UpdateCommand::Execute(const std::shared_ptr<Options>& options)
     {
         REQUIRE_PROJECT()
+        IMPLEMENT_DEFAULT_OPTIONS();
 
         const std::filesystem::path modPath = "mods";
         if (!std::filesystem::exists(modPath))

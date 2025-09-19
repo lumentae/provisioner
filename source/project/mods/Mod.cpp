@@ -11,6 +11,12 @@ namespace provisioner::project::mods
     {
         REQUIRE_PROJECT();
 
+        if (project.mData.minecraft.type == "vanilla")
+        {
+            spdlog::error("Cannot add mods to a vanilla project");
+            return;
+        }
+
         const std::filesystem::path modPath = "mods";
         if (!std::filesystem::exists(modPath))
             std::filesystem::create_directory(modPath);

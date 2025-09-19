@@ -2,6 +2,8 @@
 #include <string>
 #include <CLI/App.hpp>
 
+#include "project/Project.h"
+
 namespace provisioner::commands
 {
     class UpdateCommand final
@@ -9,6 +11,7 @@ namespace provisioner::commands
     public:
         struct Options
         {
+            DECLARE_DEFAULT_OPTIONS();
             std::string name;
         };
 
