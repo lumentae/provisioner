@@ -11,5 +11,5 @@ jobs:
   build:    
     uses: lumentae/actions/.github/workflows/build-cpp.yml@main
     with:
-      vcpkg_packages: CLI11 spdlog CURL nlohmann-json libzippp
+      vcpkg_packages: CLI11 spdlog CURL nlohmann-json libzippp hash-library
     

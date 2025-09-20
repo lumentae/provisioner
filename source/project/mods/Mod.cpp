@@ -1,9 +1,12 @@
 #include "Mod.h"
 
+#include <sha1.h>
+#include <sha3.h>
 #include <spdlog/spdlog.h>
 
 #include "project/Project.h"
 #include "utils/File.h"
+#include "utils/Prompt.h"
 
 namespace provisioner::project::mods
 {
@@ -27,7 +30,17 @@ namespace provisioner::project::mods
         if (version == "latest")
             version = globals::Platform->GetLatestVersion(id);
 
-        auto modData = globals::Platform->GetModData(id, version);
+        std::string name = id;
+        if (globals::Platform->Identifier() == "direct")
+        {
+            // version is now the url to the file
+            version = id;
+
+            id = utils::Split(utils::Split(id, "/").back(), ".").front();
+            name = utils::Prompt<std::string>("Mod Name", id);
+        }
+
+        auto modData = globals::Platform->GetModData(name, version);
         if (std::filesystem::exists(modPath / (modData.slug + ".pm")))
         {
             spdlog::info("Mod {} ({}) already exists", modData.name, modData.id);
@@ -91,7 +104,7 @@ namespace provisioner::project::mods
         Add(id, version, true);
     }
 
-    void Mod::Download(const ModData& mod)
+    void Mod::Download(ModData& mod)
     {
         REQUIRE_PROJECT();
 
@@ -105,6 +118,29 @@ namespace provisioner::project::mods
         {
             spdlog::info("Mod {} already downloaded", mod.name);
             return;
+        }
+
+        if (mod.download.sha1.empty() || mod.download.sha512.empty())
+        {
+            const std::filesystem::path modsPath = "mods";
+            if (!std::filesystem::exists(modsPath))
+            {
+                std::filesystem::create_directory(modsPath);
+            }
+
+            SHA1 sha1;
+            SHA3 sha3{SHA3::Bits512};
+
+            const std::string content = utils::ReadFile(modsPath / (mod.slug + ".pm"));
+            const std::string sha1Hash = sha1(content);
+            const std::string sha512Hash = sha3(content);
+
+            mod.download.sha1 = sha1Hash;
+            mod.download.sha512 = sha512Hash;
+            mod.download.size = std::filesystem::file_size(modsPath / (mod.slug + ".pm"));
+
+            const nlohmann::json json = mod;
+            utils::WriteFile(modsPath / (mod.slug + ".pm"), json.dump(4));
         }
 
         spdlog::info("Downloading mod {}", mod.name);

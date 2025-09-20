@@ -14,9 +14,10 @@ find_package(CLI11 CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(CURL CONFIG REQUIRED)
 find_package(libzippp CONFIG REQUIRED)
+find_package(unofficial-hash-library CONFIG REQUIRED)
 
 add_executable(provisioner ${SRC_FILES})
 
-target_link_libraries(provisioner PRIVATE CLI11::CLI11 spdlog::spdlog CURL::libcurl libzippp::libzippp)
+target_link_libraries(provisioner PRIVATE CLI11::CLI11 spdlog::spdlog CURL::libcurl libzippp::libzippp unofficial::hash-library)
 target_include_directories(provisioner PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source)
 target_compile_definitions(provisioner PRIVATE ${DEBUG} JSON_USE_IMPLICIT_CONVERSIONS)

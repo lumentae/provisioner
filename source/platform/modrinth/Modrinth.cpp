@@ -15,9 +15,7 @@ namespace provisioner::platform::modrinth
     {
         const std::filesystem::path modsPath = "mods";
         if (!std::filesystem::exists(modsPath))
-        {
             std::filesystem::create_directory(modsPath);
-        }
 
         const auto url = "https://api.modrinth.com/v2/project/" + id + "/version/" + version;
         const auto body = utils::FetchUrl(url);

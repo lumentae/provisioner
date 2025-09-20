@@ -10,5 +10,10 @@ namespace provisioner::platform::modrinth
         project::mods::ModData GetModData(const std::string& id, const std::string& version) override;
         std::string GetLatestVersion(const std::string& id) override;
         std::string Search(const std::string& query) override;
+
+        std::string Identifier() override
+        {
+            return "modrinth";
+        }
     };
 }
