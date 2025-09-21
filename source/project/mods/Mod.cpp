@@ -120,6 +120,9 @@ namespace provisioner::project::mods
             return;
         }
 
+        spdlog::info("Downloading mod {}", mod.name);
+        utils::DownloadFile(mod.download.url, modPath);
+
         if (mod.download.sha1.empty() || mod.download.sha512.empty())
         {
             const std::filesystem::path modsPath = "mods";
@@ -131,19 +134,16 @@ namespace provisioner::project::mods
             SHA1 sha1;
             SHA3 sha3{SHA3::Bits512};
 
-            const std::string content = utils::ReadFile(modsPath / (mod.slug + ".pm"));
+            const std::string content = utils::ReadFile(modPath);
             const std::string sha1Hash = sha1(content);
             const std::string sha512Hash = sha3(content);
 
             mod.download.sha1 = sha1Hash;
             mod.download.sha512 = sha512Hash;
-            mod.download.size = std::filesystem::file_size(modsPath / (mod.slug + ".pm"));
+            mod.download.size = std::filesystem::file_size(modPath);
 
             const nlohmann::json json = mod;
             utils::WriteFile(modsPath / (mod.slug + ".pm"), json.dump(4));
         }
-
-        spdlog::info("Downloading mod {}", mod.name);
-        utils::DownloadFile(mod.download.url, modPath);
     }
 }
