@@ -31,8 +31,6 @@ namespace provisioner::project
 
         ProjectData mData;
         std::shared_ptr<loader::ILoader> mLoader;
-
-    private:
         std::filesystem::path mJsonPath;
     };
 }

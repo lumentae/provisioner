@@ -63,6 +63,6 @@ namespace provisioner::loader
                 useableVersions.push_back(version);
         }
 
-        return useableVersions[useableVersions.size() - 1];
+        return useableVersions.back();
     }
 }

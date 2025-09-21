@@ -23,12 +23,16 @@ namespace provisioner::commands
     void NewCommand::Execute(const std::shared_ptr<Options>& options)
     {
         const auto projectPath = std::filesystem::current_path() / options->name;
-        if (std::filesystem::exists(projectPath))
+        if (std::filesystem::exists(projectPath) && !options->force)
             throw std::runtime_error("Project already exists");
 
         std::filesystem::create_directory(projectPath);
 
-        project::Project project(projectPath / "project.json");
+        const project::Project projectInstance(projectPath / "project.json");
+        auto& project = project::Project::GetInstance();
+        project.mData = projectInstance.mData;
+        project.mJsonPath = projectInstance.mJsonPath;
+
         project.mData.name = options->name;
 
         project.mData.minecraft.version = utils::Prompt<std::string>("Minecraft Version (e.g. 1.21.1)", "1.21.8");
@@ -41,7 +45,7 @@ namespace provisioner::commands
         {
             const auto latestLoader = loader::Fabric::GetLatestLoader();
             project.mData.minecraft.loaderVersion = utils::Prompt<std::string>(
-                "Loader Version (e.g. 0.14.1)", latestLoader);
+                "Loader Version (e.g. 0.17.2)", latestLoader);
         }
         else if (project.mData.minecraft.type == "neoforge")
         {

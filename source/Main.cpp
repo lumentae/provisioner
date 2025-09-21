@@ -49,6 +49,7 @@ int main(const int argc, char** argv)
         REGISTER_ALIAS(Upgrade, Update)
         REGISTER_ALIAS(Install, Add)
         REGISTER_ALIAS(Uninstall, Remove)
+        REGISTER_ALIAS(Create, New)
 
         app.require_subcommand(1);
 
