@@ -5,6 +5,10 @@
     "size": 144781,
     "url": "https://cdn.modrinth.com/data/sml2FMaA/versions/8oiUayeD/antixray-fabric-1.4.10%2B1.21.6.jar"
   },
+  "env": {
+    "client": "unsupported",
+    "server": "required"
+  },
   "id": "anti-xray",
   "name": "AntiXray",
   "platform": "modrinth",

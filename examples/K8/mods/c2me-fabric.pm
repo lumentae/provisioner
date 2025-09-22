@@ -5,6 +5,10 @@
     "size": 4682142,
     "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/7lwPGYpL/c2me-fabric-mc1.21.8-0.3.5%2Balpha.0.8.jar"
   },
+  "env": {
+    "client": "optional",
+    "server": "required"
+  },
   "id": "c2me-fabric",
   "name": "Concurrent Chunk Management Engine (Fabric)",
   "platform": "modrinth",

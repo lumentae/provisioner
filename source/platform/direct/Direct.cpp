@@ -54,6 +54,9 @@ namespace provisioner::platform::direct
 
         modData.requirements = {};
 
+        modData.env["client"] = "optional";
+        modData.env["server"] = "required";
+
         return modData;
     }
 

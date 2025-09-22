@@ -5,13 +5,17 @@
     "size": 1149126,
     "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/cz0b1j8R/cloth-config-19.0.147-fabric.jar"
   },
-  "id": "cloth-config",
+  "env": {
+    "client": "optional",
+    "server": "optional"
+  },
+  "id": "9s6osm5g",
   "name": "Cloth Config API",
   "platform": "modrinth",
   "requirements": [],
   "slug": "cloth-config",
   "update": {
-    "id": "cloth-config",
+    "id": "9s6osm5g",
     "version": "cz0b1j8R"
   }
 }

@@ -5,6 +5,10 @@
     "size": 79653,
     "url": "https://cdn.modrinth.com/data/uXXizFIs/versions/CtMpt7Jr/ferritecore-8.0.0-fabric.jar"
   },
+  "env": {
+    "client": "optional",
+    "server": "optional"
+  },
   "id": "ferrite-core",
   "name": "FerriteCore",
   "platform": "modrinth",

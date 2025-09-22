@@ -5,7 +5,11 @@
     "size": 589654,
     "url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/XcJm5LH4/architectury-17.0.8-fabric.jar"
   },
-  "id": "architectury-api",
+  "env": {
+    "client": "required",
+    "server": "required"
+  },
+  "id": "lhGA9TYQ",
   "name": "Architectury API",
   "platform": "modrinth",
   "requirements": [
@@ -17,7 +21,7 @@
   ],
   "slug": "architectury-api",
   "update": {
-    "id": "architectury-api",
+    "id": "lhGA9TYQ",
     "version": "XcJm5LH4"
   }
 }

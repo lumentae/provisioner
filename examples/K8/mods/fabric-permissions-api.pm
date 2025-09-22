@@ -5,6 +5,10 @@
     "size": 14051,
     "url": "https://cdn.modrinth.com/data/lzVo0Dll/versions/LK7O0kKh/fabric-permissions-api-0.4.0.jar"
   },
+  "env": {
+    "client": "unsupported",
+    "server": "required"
+  },
   "id": "fabric-permissions-api",
   "name": "fabric-permissions-api",
   "platform": "modrinth",

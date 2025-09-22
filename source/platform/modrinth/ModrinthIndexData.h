@@ -38,11 +38,7 @@ namespace provisioner::platform::modrinth
             {"sha1", modData.download.sha1},
             {"sha512", modData.download.sha512}
         };
-        // TODO: Add this to moddata
-        indexFile.env = {
-            {"client", "required"},
-            {"server", "required"}
-        };
+        indexFile.env = modData.env;
         indexFile.downloads = {
             modData.download.url
         };

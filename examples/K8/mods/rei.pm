@@ -5,6 +5,10 @@
     "size": 2461567,
     "url": "https://cdn.modrinth.com/data/nfn13YXA/versions/hoEFy7aF/RoughlyEnoughItems-20.0.811-fabric.jar"
   },
+  "env": {
+    "client": "required",
+    "server": "unsupported"
+  },
   "id": "rei",
   "name": "Roughly Enough Items (REI)",
   "platform": "modrinth",

@@ -10,7 +10,7 @@
 
 namespace provisioner::project::mods
 {
-    void Mod::Add(std::string id, std::string version, const bool noSearch)
+    void Mod::Add(std::string id, std::string version, const bool noSearch, const bool force)
     {
         REQUIRE_PROJECT();
 
@@ -41,7 +41,7 @@ namespace provisioner::project::mods
         }
 
         auto modData = globals::Platform->GetModData(name, version);
-        if (std::filesystem::exists(modPath / (modData.slug + ".pm")))
+        if (std::filesystem::exists(modPath / (modData.slug + ".pm")) && !force)
         {
             spdlog::info("Mod {} ({}) already exists", modData.name, modData.id);
             return;
@@ -55,7 +55,7 @@ namespace provisioner::project::mods
                 continue;
 
             const auto dependencyVersion = version_id.has_value() ? version_id.value() : "latest";
-            Add(project_id, dependencyVersion, true);
+            Add(project_id, dependencyVersion, true, force);
         }
 
         const nlohmann::json json = modData;
@@ -80,7 +80,7 @@ namespace provisioner::project::mods
         std::filesystem::remove(modFile);
     }
 
-    void Mod::Update(const std::string& id)
+    void Mod::Update(const std::string& id, const bool force)
     {
         const std::filesystem::path modPath = "mods";
         if (!std::filesystem::exists(modPath))
@@ -89,7 +89,7 @@ namespace provisioner::project::mods
         const auto modFile = modPath / (id + ".pm");
         if (!std::filesystem::exists(modFile))
         {
-            spdlog::warn("Mod {} does not exist", id);
+            spdlog::error("Mod {} does not exist, use 'add' instead", id);
             return;
         }
 
@@ -97,11 +97,11 @@ namespace provisioner::project::mods
         const ModData modData = nlohmann::json::parse(utils::ReadFile(modFile));
 
         spdlog::debug("Latest version for mod {} is {} (installed {})", id, version, modData.update.version);
-        if (modData.update.version == version)
+        if (modData.update.version == version && !force)
             return;
 
         std::filesystem::remove(modFile);
-        Add(id, version, true);
+        Add(id, version, true, force);
     }
 
     void Mod::Download(ModData& mod)

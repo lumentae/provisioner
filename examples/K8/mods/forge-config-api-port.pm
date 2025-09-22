@@ -5,7 +5,11 @@
     "size": 635376,
     "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/daREdLQt/ForgeConfigAPIPort-v21.8.1-1.21.8-Fabric.jar"
   },
-  "id": "forge-config-api-port",
+  "env": {
+    "client": "optional",
+    "server": "optional"
+  },
+  "id": "ohNO6lps",
   "name": "Forge Config API Port",
   "platform": "modrinth",
   "requirements": [
@@ -17,7 +21,7 @@
   ],
   "slug": "forge-config-api-port",
   "update": {
-    "id": "forge-config-api-port",
+    "id": "ohNO6lps",
     "version": "daREdLQt"
   }
 }

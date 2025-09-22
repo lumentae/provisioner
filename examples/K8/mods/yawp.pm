@@ -5,6 +5,10 @@
     "size": 739475,
     "url": "https://cdn.modrinth.com/data/py6EMmAJ/versions/E9tINY2u/yawp-1.21.8-fabric-0.6.1-beta1.jar"
   },
+  "env": {
+    "client": "unsupported",
+    "server": "required"
+  },
   "id": "yawp",
   "name": "Yet Another World Protector",
   "platform": "modrinth",

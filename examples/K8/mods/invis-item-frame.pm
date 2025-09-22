@@ -5,6 +5,10 @@
     "size": 33282,
     "url": "https://cdn.modrinth.com/data/Zqs0ksZg/versions/mKu0Ea3C/invis-item-frame-4.jar"
   },
+  "env": {
+    "client": "optional",
+    "server": "required"
+  },
   "id": "invis-item-frame",
   "name": "Invis item frame",
   "platform": "modrinth",

@@ -55,6 +55,9 @@ namespace provisioner::platform::modrinth
 
         modData.requirements = versionJson["dependencies"];
 
+        modData.env["client"] = modJson["client_side"];
+        modData.env["server"] = modJson["server_side"];
+
         return modData;
     }
 

@@ -5,6 +5,10 @@
     "size": 792413,
     "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/pDfTqezk/lithium-fabric-0.18.0%2Bmc1.21.8.jar"
   },
+  "env": {
+    "client": "optional",
+    "server": "optional"
+  },
   "id": "lithium",
   "name": "Lithium",
   "platform": "modrinth",

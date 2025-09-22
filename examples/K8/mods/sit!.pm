@@ -5,6 +5,10 @@
     "size": 386984,
     "url": "https://cdn.modrinth.com/data/EsYqsGV4/versions/yGaQnuwV/sit%21-1.2.5.0%2B1.21.8.jar"
   },
+  "env": {
+    "client": "unsupported",
+    "server": "required"
+  },
   "id": "sit!",
   "name": "Sit!",
   "platform": "modrinth",

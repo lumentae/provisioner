@@ -5,6 +5,10 @@
     "size": 675892,
     "url": "https://cdn.modrinth.com/data/zVVpzurY/versions/c1wkXVhH/otterlib-0.2.2.1%2B1.21.8-fabric.jar"
   },
+  "env": {
+    "client": "unsupported",
+    "server": "required"
+  },
   "id": "zVVpzurY",
   "name": "OtterLib",
   "platform": "modrinth",

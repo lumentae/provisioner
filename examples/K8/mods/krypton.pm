@@ -5,6 +5,10 @@
     "size": 270170,
     "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/neW85eWt/krypton-0.2.9.jar"
   },
+  "env": {
+    "client": "optional",
+    "server": "optional"
+  },
   "id": "krypton",
   "name": "Krypton",
   "platform": "modrinth",

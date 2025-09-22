@@ -41,7 +41,9 @@ namespace provisioner::project::mods
         ModDownload download = ModDownload{};
         ModUpdate update = ModUpdate{};
         std::vector<ModRequirement> requirements = {};
+        std::map<std::string, std::string> env;
     };
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModData, name, id, slug, platform, download, update, requirements)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModData, name, id, slug, platform, download, update, requirements,
+                                                    env)
 };

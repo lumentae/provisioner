@@ -5,6 +5,10 @@
     "size": 227173,
     "url": "https://cdn.modrinth.com/data/WC4UgDcZ/versions/7ofXrpfO/grind-enchantments-4.0.1%2B1.21.6-rc1.jar"
   },
+  "env": {
+    "client": "optional",
+    "server": "required"
+  },
   "id": "grind-enchantments",
   "name": "Grind Enchantments",
   "platform": "modrinth",

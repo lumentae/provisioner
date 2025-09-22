@@ -5,6 +5,10 @@
     "size": 21120,
     "url": "https://cdn.modrinth.com/data/Wnxd13zP/versions/GfTjiLfw/Clumps-fabric-1.21.8-26.0.0.1.jar"
   },
+  "env": {
+    "client": "required",
+    "server": "required"
+  },
   "id": "clumps",
   "name": "Clumps",
   "platform": "modrinth",

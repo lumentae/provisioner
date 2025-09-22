@@ -5,6 +5,10 @@
     "size": 896871,
     "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/o3aatc5Q/Jade-1.21.8-Fabric-19.3.2.jar"
   },
+  "env": {
+    "client": "optional",
+    "server": "optional"
+  },
   "id": "jade",
   "name": "Jade 🔍",
   "platform": "modrinth",

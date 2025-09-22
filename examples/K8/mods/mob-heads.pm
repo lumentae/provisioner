@@ -1,9 +1,13 @@
 {
     "download": {
-        "sha1": "17b2843f50c5694531b83dd26c3af86105e8ca05",
-        "sha512": "f3c6707cb627a08297f438cde5f8d493eee65a5a9c234d77a84c68d3dd3f60471339dbbb877f484acb1c3d096e2d41109d900b2ae278bc3c83b51d3e6035dccd",
-        "size": 3688043,
-        "url": "https://cdn.modrinth.com/data/82uI0waE/versions/AJ1ND9cX/mob-heads-v3.6.1.jar"
+        "sha1": "d6a2d01ac4d04381862026e6ced3e0ae206a8166",
+        "sha512": "0a7a6fb8dd3d065c3dff3fbf3f9bd99a6c7fad86d881284990fdf82ee3dcb002f14263e4c1ca38e10e2d773024ed5065936cd421215cd77a3ac4fa0c63899e72",
+        "size": 3691259,
+        "url": "https://cdn.modrinth.com/data/82uI0waE/versions/TLdq8mWC/mob-heads-v3.6.2.jar"
+    },
+    "env": {
+        "client": "optional",
+        "server": "required"
     },
     "id": "mob-heads",
     "name": "Mob Heads",
@@ -12,6 +16,6 @@
     "slug": "mob-heads",
     "update": {
         "id": "mob-heads",
-        "version": "AJ1ND9cX"
+        "version": "TLdq8mWC"
     }
 }

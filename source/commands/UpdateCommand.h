@@ -13,6 +13,7 @@ namespace provisioner::commands
         {
             DECLARE_DEFAULT_OPTIONS();
             std::string name;
+            bool force;
         };
 
         UpdateCommand() = default;

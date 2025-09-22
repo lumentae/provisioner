@@ -5,24 +5,28 @@
     "size": 34668,
     "url": "https://cdn.modrinth.com/data/jCBrrLTs/versions/MnVCluXs/TaxFreeLevels-1.4.10-fabric-1.21.5.jar"
   },
-  "id": "jCBrrLTs",
+  "env": {
+    "client": "required",
+    "server": "required"
+  },
+  "id": "tax-free-levels",
   "name": "Tax Free Levels",
   "platform": "modrinth",
   "requirements": [
     {
       "dependency_type": "required",
-      "project_id": "9s6osm5g",
+      "project_id": "P7dR8mSH",
       "version_id": null
     },
     {
       "dependency_type": "required",
-      "project_id": "P7dR8mSH",
+      "project_id": "9s6osm5g",
       "version_id": null
     }
   ],
   "slug": "tax-free-levels",
   "update": {
-    "id": "jCBrrLTs",
+    "id": "tax-free-levels",
     "version": "MnVCluXs"
   }
 }

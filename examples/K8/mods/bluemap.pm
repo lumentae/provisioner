@@ -5,6 +5,10 @@
     "size": 6464962,
     "url": "https://cdn.modrinth.com/data/swbUV1cr/versions/plVwynim/bluemap-5.11-fabric.jar"
   },
+  "env": {
+    "client": "unsupported",
+    "server": "required"
+  },
   "id": "bluemap",
   "name": "BlueMap",
   "platform": "modrinth",

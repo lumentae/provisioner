@@ -104,8 +104,6 @@ namespace provisioner::project
 
         if (type == "mrpack")
         {
-            // TODO: Add overrides
-
             if (std::filesystem::exists(path))
                 std::filesystem::remove(path);
 

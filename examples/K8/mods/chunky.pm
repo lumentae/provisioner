@@ -5,6 +5,10 @@
     "size": 349221,
     "url": "https://cdn.modrinth.com/data/fALzjamp/versions/inWDi2cf/Chunky-Fabric-1.4.40.jar"
   },
+  "env": {
+    "client": "optional",
+    "server": "optional"
+  },
   "id": "chunky",
   "name": "Chunky",
   "platform": "modrinth",
