@@ -10,6 +10,7 @@ namespace provisioner::commands
         struct Options
         {
             std::string name;
+            bool remove;
         };
 
         IncludeCommand() = default;
