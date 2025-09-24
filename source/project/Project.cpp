@@ -114,11 +114,23 @@ namespace provisioner::project
                 throw std::runtime_error("Failed to open zip file");
             }
 
+            auto overridesPath = std::filesystem::path("overrides");
             platform::modrinth::ModrinthIndexData indexData;
             for (const auto& file : utils::GetFilesByExtension(std::filesystem::current_path() / "mods", "pm"))
             {
                 std::string fileContent = utils::ReadFile(file);
                 mods::ModData modData = nlohmann::json::parse(fileContent);
+
+                if (modData.platform != "modrinth")
+                {
+                    if (auto modPath = overridesPath / "mods" / (modData.slug + ".jar"); !zip.addFile(
+                        modPath.generic_string(), ".cache/" + modData.slug + ".jar"))
+                    {
+                        std::filesystem::remove_all(tempPath);
+                        throw std::runtime_error("Failed to add " + modData.slug);
+                    }
+                    continue;
+                }
 
                 platform::modrinth::ModrinthIndexFile indexFile = platform::modrinth::GetIndexFileFromModData(modData);
                 indexData.files.emplace_back(indexFile);
@@ -142,7 +154,7 @@ namespace provisioner::project
                     if (relativePath.back() == '.')
                         relativePath.pop_back();
 
-                    auto zipPath = (std::filesystem::path("overrides") / include / relativePath).generic_string();
+                    auto zipPath = (overridesPath / include / relativePath).generic_string();
                     if (zipPath.back() == '/')
                         zipPath.pop_back();
 
@@ -158,6 +170,7 @@ namespace provisioner::project
 
             zip.close();
             spdlog::info("Exported project to {}", path.string());
+            std::filesystem::remove_all(tempPath);
             return;
         }
 

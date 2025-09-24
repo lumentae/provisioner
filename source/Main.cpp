@@ -17,7 +17,6 @@
 
 /* TODO:
  * Implement plugin support
- * Modify command to easily edit config files
  */
 
 int main(const int argc, char** argv)
