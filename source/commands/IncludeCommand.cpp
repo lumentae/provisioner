@@ -20,6 +20,7 @@ namespace provisioner::commands
     {
         REQUIRE_PROJECT()
 
+        // TODO: Remove functionality
         project.mData.includes.push_back(options->name);
         project.Save();
     }

@@ -11,6 +11,7 @@
 #include "commands/UpdateCommand.h"
 #include "commands/ExportCommand.h"
 #include "commands/ListCommand.h"
+#include "commands/ModifyCommand.h"
 #include "project/Project.h"
 #include "utils/String.h"
 
@@ -46,6 +47,7 @@ int main(const int argc, char** argv)
         REGISTER_COMMAND(Remove, "Removes a mod from a project")
         REGISTER_COMMAND(Export, "Exports a project to a .mrpack file")
         REGISTER_COMMAND(List, "Lists all mods in a project")
+        REGISTER_COMMAND(Modify, "Modifies the config files")
 
         REGISTER_ALIAS(Upgrade, Update)
         REGISTER_ALIAS(Install, Add)
