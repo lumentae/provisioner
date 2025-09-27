@@ -49,11 +49,18 @@ int main(const int argc, char** argv)
         REGISTER_COMMAND(Modify, "Modifies the config files")
 
         REGISTER_ALIAS(Upgrade, Update)
-        REGISTER_ALIAS(Install, Add)
-        REGISTER_ALIAS(Uninstall, Remove)
-        REGISTER_ALIAS(Create, New)
+    REGISTER_ALIAS(Refresh, Update)
+    REGISTER_ALIAS(Install, Add)
+    REGISTER_ALIAS(Uninstall, Remove)
+    REGISTER_ALIAS(Delete, Remove)
+    REGISTER_ALIAS(Rm, Remove)
+    REGISTER_ALIAS(Create, New)
+    REGISTER_ALIAS(Init, New)
+    REGISTER_ALIAS(Ls, List)
+    REGISTER_ALIAS(Config, Modify)
+    REGISTER_ALIAS(Edit, Modify)
 
-        app.require_subcommand(1);
+    app.require_subcommand(1);
 
         CLI11_PARSE(app, argc, argv);
 #ifndef DEBUG
