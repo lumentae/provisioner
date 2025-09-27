@@ -11,7 +11,8 @@ It makes creating and configuring servers fast and easy!
 - Manage mods and configuration with ease
 
 ## Example Usage
-```py
+
+```bash
 # Create a new server
 provisioner new myserver
 
