@@ -136,8 +136,14 @@ namespace provisioner::project
                 indexData.files.emplace_back(indexFile);
             }
 
+            auto loaderType = mData.minecraft.type;
+            if (loaderType == "fabric" || loaderType == "quilt")
+            {
+                loaderType += "-loader";
+            }
+
             indexData.dependencies.emplace("minecraft", mData.minecraft.version);
-            indexData.dependencies.emplace(mData.minecraft.type + "-loader", mData.minecraft.loaderVersion);
+            indexData.dependencies.emplace(loaderType, mData.minecraft.loaderVersion);
 
             std::string content = nlohmann::json(indexData).dump(4) + "\n";
             if (!zip.addData("modrinth.index.json", content.c_str(), content.size()))
