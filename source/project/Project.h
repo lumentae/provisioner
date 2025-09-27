@@ -46,7 +46,7 @@ namespace provisioner::project
     auto& project = project::Project::GetInstance(); \
     if (project.mData.name.empty() || !std::filesystem::exists("project.json")) \
     { \
-        throw std::runtime_error("No project found. Please run 'provisioner new' to create a new project."); \
+        throw std::runtime_error("No project found. Please run 'provisioner new' to create a new project. Please check if you're in a directory with a project.json!"); \
     }
 
 #define ENSURE_STRING(val, ...) \
