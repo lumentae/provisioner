@@ -11,18 +11,19 @@ It makes creating and configuring servers fast and easy!
 - Manage mods and configuration with ease
 
 ## Example Usage
-```bash
+```py
 # Create a new server
 provisioner new myserver
+
+# Go into the server directory
+cd myserver
 
 # Add a mod
 provisioner add mymod
 
-# Updates mods
-provisioner update
-
 # Compile the server
 provisioner compile
 
-# Include a file or directory
-provisioner include myfolder/myfile.json
+# Exports the server
+provisioner export
+```
