@@ -6,7 +6,7 @@ namespace provisioner::loader
     class Fabric final : public ILoader
     {
     public:
-        void Download(const std::filesystem::path& path) override;
+        void Download(const std::filesystem::path& path, bool skipSetup) override;
         static std::string GetLatestInstaller();
         static std::string GetLatestLoader();
     };

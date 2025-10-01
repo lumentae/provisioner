@@ -51,7 +51,7 @@ namespace provisioner::project
         file << json.dump(4);
     }
 
-    void Project::Compile(const std::filesystem::path& path) const
+    void Project::Compile(const std::filesystem::path& path, bool skipSetup) const
     {
         if (std::filesystem::exists(path))
             std::filesystem::remove_all(path);
@@ -92,7 +92,7 @@ namespace provisioner::project
                                        std::filesystem::copy_options::overwrite_existing);
         }
 
-        mLoader->Download(path / "server.jar");
+        mLoader->Download(path / "server.jar", skipSetup);
 
         spdlog::info("Compiled project to {}", path.string());
     }
@@ -100,7 +100,7 @@ namespace provisioner::project
     void Project::Export(const std::string& type, const std::filesystem::path& path) const
     {
         const auto tempPath = std::filesystem::temp_directory_path() / "provisioner_temp";
-        Compile(tempPath);
+        Compile(tempPath, true);
 
         if (type == "mrpack")
         {
@@ -116,6 +116,8 @@ namespace provisioner::project
 
             auto overridesPath = std::filesystem::path("overrides");
             platform::modrinth::ModrinthIndexData indexData;
+            indexData.name = mData.name;
+
             for (const auto& file : utils::GetFilesByExtension(std::filesystem::current_path() / "mods", "pm"))
             {
                 std::string fileContent = utils::ReadFile(file);
@@ -123,8 +125,9 @@ namespace provisioner::project
 
                 if (modData.platform != "modrinth")
                 {
-                    if (auto modPath = overridesPath / "mods" / (modData.slug + ".jar"); !zip.addFile(
-                        modPath.generic_string(), ".cache/" + modData.slug + ".jar"))
+                    auto modFile = modData.slug + ".jar";
+                    if (auto modPath = overridesPath / "mods" / modFile; !zip.addFile(
+                        modPath.generic_string(), ".cache/" + modFile))
                     {
                         std::filesystem::remove_all(tempPath);
                         throw std::runtime_error("Failed to add " + modData.slug);
@@ -171,6 +174,37 @@ namespace provisioner::project
                         std::filesystem::remove_all(tempPath);
                         throw std::runtime_error("Failed to add " + file.string());
                     }
+                }
+            }
+
+            zip.close();
+            spdlog::info("Exported project to {}", path.string());
+            std::filesystem::remove_all(tempPath);
+            return;
+        }
+        if (type == "zip")
+        {
+            if (std::filesystem::exists(path))
+                std::filesystem::remove(path);
+
+            libzippp::ZipArchive zip(path.string());
+            if (!zip.open(libzippp::ZipArchive::Write))
+            {
+                std::filesystem::remove_all(tempPath);
+                throw std::runtime_error("Failed to open zip file");
+            }
+
+            for (const auto& file : utils::GetFilesByExtension(tempPath, "", true))
+            {
+                auto relativePath = std::filesystem::relative(file, tempPath).string();
+                if (relativePath.back() == '.')
+                    relativePath.pop_back();
+
+                spdlog::info("Adding {} as {}", file.string(), relativePath);
+                if (!zip.addFile(relativePath, file.string()))
+                {
+                    std::filesystem::remove_all(tempPath);
+                    throw std::runtime_error("Failed to add " + file.string());
                 }
             }
 

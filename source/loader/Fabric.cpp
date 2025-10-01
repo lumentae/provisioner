@@ -5,7 +5,7 @@
 
 namespace provisioner::loader
 {
-    void Fabric::Download(const std::filesystem::path& path)
+    void Fabric::Download(const std::filesystem::path& path, bool skipSetup)
     {
         REQUIRE_PROJECT()
 

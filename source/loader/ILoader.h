@@ -7,6 +7,6 @@ namespace provisioner::loader
     {
     public:
         virtual ~ILoader() = default;
-        virtual void Download(const std::filesystem::path& path) = 0;
+        virtual void Download(const std::filesystem::path& path, bool skipSetup = false) = 0;
     };
 }

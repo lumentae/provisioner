@@ -6,7 +6,7 @@
 
 namespace provisioner::loader
 {
-    void Neoforge::Download(const std::filesystem::path& path)
+    void Neoforge::Download(const std::filesystem::path& path, bool skipSetup)
     {
         REQUIRE_PROJECT()
 
@@ -34,6 +34,9 @@ namespace provisioner::loader
 
         spdlog::info("Using cached Neoforge installer at {}", cacheFile.string());
         std::filesystem::copy_file(cacheFile, path, std::filesystem::copy_options::overwrite_existing);
+
+        if (skipSetup)
+            return;
 
         auto installCommand = std::format("java -jar {} --install-server {}", path.string(),
                                           path.parent_path().string());

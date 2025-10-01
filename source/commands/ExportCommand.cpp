@@ -24,7 +24,7 @@ namespace provisioner::commands
     void ExportCommand::Execute(const std::shared_ptr<Options>& options)
     {
         REQUIRE_PROJECT()
-        ENSURE_STRING(options->type, "mrpack");
+        ENSURE_STRING(options->type, "mrpack", "zip");
 
         auto exportFile = project.mData.name + "." + options->type;
         if (!options->path.empty())

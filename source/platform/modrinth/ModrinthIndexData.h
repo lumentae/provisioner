@@ -21,13 +21,13 @@ namespace provisioner::platform::modrinth
     {
         int formatVersion = 1;
         std::string game = "minecraft";
+        std::string name = "Unnamed";
         std::string versionId;
         std::vector<ModrinthIndexFile> files;
         std::map<std::string, std::string> dependencies;
     };
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModrinthIndexData, formatVersion, game, versionId, files,
-                                                    dependencies)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(ModrinthIndexData, formatVersion, game, name, versionId, files, dependencies)
 
     inline ModrinthIndexFile GetIndexFileFromModData(const project::mods::ModData& modData)
     {
