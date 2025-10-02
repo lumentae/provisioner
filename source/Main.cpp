@@ -12,6 +12,7 @@
 #include "commands/ExportCommand.h"
 #include "commands/ListCommand.h"
 #include "commands/ModifyCommand.h"
+#include "commands/SyncCommand.h"
 #include "project/Project.h"
 #include "utils/String.h"
 
@@ -47,6 +48,7 @@ int main(const int argc, char** argv)
         REGISTER_COMMAND(Export, "Exports a project to a .mrpack file")
         REGISTER_COMMAND(List, "Lists all mods in a project")
         REGISTER_COMMAND(Modify, "Modifies the config files")
+        REGISTER_COMMAND(Sync, "Syncs the project with a remote destination")
 
         REGISTER_ALIAS(Refresh, Update)
         REGISTER_ALIAS(Install, Add)

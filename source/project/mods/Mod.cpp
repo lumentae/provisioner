@@ -113,8 +113,9 @@ namespace provisioner::project::mods
             std::filesystem::create_directory(cachePath);
 
         const std::filesystem::path modPath = cachePath / (mod.slug + ".jar");
+        const bool calculateHash = mod.download.sha1.empty() || mod.download.sha512.empty();
 
-        if (std::filesystem::exists(modPath))
+        if (std::filesystem::exists(modPath) && !calculateHash)
         {
             spdlog::info("Mod {} already downloaded", mod.name);
             return;
@@ -123,7 +124,7 @@ namespace provisioner::project::mods
         spdlog::info("Downloading mod {}", mod.name);
         utils::DownloadFile(mod.download.url, modPath);
 
-        if (mod.download.sha1.empty() || mod.download.sha512.empty())
+        if (calculateHash)
         {
             const std::filesystem::path modsPath = "mods";
             if (!std::filesystem::exists(modsPath))

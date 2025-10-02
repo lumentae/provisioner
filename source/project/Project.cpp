@@ -217,4 +217,37 @@ namespace provisioner::project
         std::filesystem::remove_all(tempPath);
         throw std::runtime_error("Unsupported export type: " + type);
     }
+
+    void Project::Sync(const std::filesystem::path& path) const
+    {
+        const auto tempPath = std::filesystem::temp_directory_path() / "provisioner_temp";
+        Compile(tempPath, true);
+
+        for (const auto& include : mData.includes)
+        {
+            const auto includePath = std::filesystem::path(include);
+            if (!std::filesystem::exists(includePath))
+            {
+                spdlog::warn("Include {} does not exist", include);
+                continue;
+            }
+
+            const auto destPath = path / includePath;
+            if (std::filesystem::is_regular_file(includePath))
+                std::filesystem::copy_file(includePath, destPath, std::filesystem::copy_options::overwrite_existing);
+            else
+                std::filesystem::copy(includePath, destPath,
+                                      std::filesystem::copy_options::recursive |
+                                      std::filesystem::copy_options::overwrite_existing);
+        }
+
+        const auto modsPath = path / "mods";
+        std::filesystem::remove_all(modsPath);
+        std::filesystem::copy(tempPath / "mods", modsPath,
+                              std::filesystem::copy_options::recursive |
+                              std::filesystem::copy_options::overwrite_existing);
+
+        spdlog::info("Synced project to {}", path.string());
+        std::filesystem::remove_all(tempPath);
+    }
 }
