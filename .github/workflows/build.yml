@@ -14,6 +14,5 @@ jobs:
     needs: build
     uses: lumentae/actions/.github/workflows/release.yml@main
     with:
-      branch: test-release2
       commit-message: ${{ github.event.head_commit.message }}
     
