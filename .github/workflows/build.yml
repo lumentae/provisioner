@@ -12,4 +12,9 @@ jobs:
     uses: lumentae/actions/.github/workflows/build-cpp.yml@main
     with:
       vcpkg_packages: CLI11 spdlog CURL nlohmann-json libzippp hash-library
+  release:
+    needs: build
+    uses: lumentae/actions/.github/workflows/release.yml@main
+    with:
+      commit-message: ${{ github.event.head_commit.message }}
     
