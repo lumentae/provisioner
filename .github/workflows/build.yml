@@ -11,6 +11,8 @@ jobs:
     with:
       vcpkg_packages: CLI11 spdlog CURL nlohmann-json libzippp hash-library
   release:
+    permissions:
+        contents: write
     needs: build
     uses: lumentae/actions/.github/workflows/release.yml@main
     with:
