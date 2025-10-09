@@ -96,6 +96,12 @@ namespace provisioner::project::mods
         const std::string version = globals::Platform->GetLatestVersion(id);
         const ModData modData = nlohmann::json::parse(utils::ReadFile(modFile));
 
+        if (modData.platform != globals::Platform->Identifier())
+        {
+            spdlog::error("Cannot update mod {} from platform {}", id, modData.platform);
+            return;
+        }
+
         spdlog::debug("Latest version for mod {} is {} (installed {})", id, version, modData.update.version);
         if (modData.update.version == version && !force)
             return;

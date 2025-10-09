@@ -66,7 +66,7 @@ namespace provisioner::platform::modrinth
         REQUIRE_PROJECT_LOAD();
 
         const auto modUrl = std::format(
-            R"(https://api.modrinth.com/v2/project/{}/version?loaders=%5B%22{}%22%5D&game_versions=%5B%22{}%22%5D&featured=true)",
+            R"(https://api.modrinth.com/v2/project/{}/version?loaders=%5B%22{}%22%5D&game_versions=%5B%22{}%22%5D)",
             id,
             project.mData.minecraft.type,
             project.mData.allowedVersionsString.second
