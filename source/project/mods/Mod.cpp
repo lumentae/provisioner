@@ -108,6 +108,12 @@ namespace provisioner::project::mods
 
         std::filesystem::remove(modFile);
         Add(id, version, true, force);
+
+        ModData modDataNew = nlohmann::json::parse(utils::ReadFile(modFile));
+        modDataNew.env = modData.env;
+
+        const nlohmann::json json = modDataNew;
+        utils::WriteFile(modFile, json.dump(4));
     }
 
     void Mod::Download(ModData& mod)
