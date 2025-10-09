@@ -61,6 +61,8 @@ namespace provisioner::utils
             throw std::runtime_error("Failed to initialize curl");
         }
 
+        spdlog::info("Fetching {}", url);
+
         std::string response;
 
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
